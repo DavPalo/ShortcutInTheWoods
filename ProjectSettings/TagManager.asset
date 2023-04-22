@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Wheel
+  - Weapon
+  - Vehicle
   layers:
   - Default
   - TransparentFX
@@ -11,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Vehicle
+  - Wheel
   - 
   - 
   - 
@@ -40,4 +43,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Vehicle
+    uniqueID: 982395625
+    locked: 0
+  - name: Player
+    uniqueID: 1232314197
+    locked: 0
+  - name: Wheel
+    uniqueID: 2363153347
     locked: 0
