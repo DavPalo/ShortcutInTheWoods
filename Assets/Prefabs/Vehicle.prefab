@@ -520,8 +520,7 @@ GameObject:
   - component: {fileID: 7536196755888660281}
   - component: {fileID: 7536196755888660280}
   - component: {fileID: 7536196755888660285}
-  - component: {fileID: 9213108153548888810}
-  - component: {fileID: 6762839790018181038}
+  - component: {fileID: 1689222720}
   m_Layer: 0
   m_Name: Vehicle
   m_TagString: Untagged
@@ -707,11 +706,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7536196755888660256}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22f99bf0ce256394084ddbfb5023f225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  body: {fileID: 0}
   speed: 1
 --- !u!114 &7536196755888660280
 MonoBehaviour:
@@ -744,7 +744,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &9213108153548888810
+--- !u!114 &1689222720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -753,7 +753,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7536196755888660256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: df92282800d30734a8a40c9251b7f8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -770,15 +770,3 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!114 &6762839790018181038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7536196755888660256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

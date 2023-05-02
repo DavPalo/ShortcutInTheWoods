@@ -14,7 +14,7 @@ public class PlayerController : NetworkBehaviour
 
     public VehicleController vehicle;
 
-    public NetworkVariable<bool> isDriving = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private bool isDriving = false;
     private bool isShooting = false;
     private Collider2D actualCollider = null;
 
@@ -22,19 +22,19 @@ public class PlayerController : NetworkBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleController>();
-        this.transform.parent = vehicle.transform;
+        transform.parent = vehicle.transform;
     }
 
     void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isDriving.Value)
+        if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
             body.bodyType = RigidbodyType2D.Dynamic;
             body.constraints = RigidbodyConstraints2D.None;
             StartCoroutine(IgnoreCollision());
-            isDriving.Value = false;
+            isDriving = false;
             vehicle.enabled = false;
         }
         else if(Input.GetKeyDown(KeyCode.Space) && isShooting)
@@ -48,11 +48,10 @@ public class PlayerController : NetworkBehaviour
         // Gives a value between -1 and 1
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
         vertical = Input.GetAxisRaw("Vertical"); // -1 is down
-    }
 
-    void FixedUpdate()
-    {
-        if (!isDriving.Value)
+        
+
+        if (!isDriving)
         {
             if (horizontal != 0 && vertical != 0) // Check for diagonal movement
             {
@@ -65,8 +64,27 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            InputServerRpc();
+            vehicle.horizontal = horizontal;
+            vehicle.vertical = vertical;
         }
+        /*else
+        {
+            if(horizontal != 0 || vertical != 0)
+            {
+                vehicle.speed += vehicle.acceleration * Time.deltaTime;
+            }
+            
+            vehicle.body.velocity = new Vector2(horizontal * vehicle.speed, vertical * vehicle.speed);
+
+        }*/
+
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeOwnerServerRpc()
+    {
+        vehicle.GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
     }
 
     IEnumerator IgnoreCollision()
@@ -82,9 +100,10 @@ public class PlayerController : NetworkBehaviour
         {
             body.bodyType = RigidbodyType2D.Kinematic;
             body.constraints = RigidbodyConstraints2D.FreezePosition;
-            isDriving.Value = true;
+            isDriving = true;
             actualCollider = collision.collider;
             vehicle.enabled = true;
+            ChangeOwnerServerRpc();
         }
 
         if(collision.collider.tag == "Weapon")
@@ -96,16 +115,4 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
-    void InputServerRpc()
-    {
-        if (horizontal != 0 && vertical != 0) // Check for diagonal movement
-        {
-            // limit movement speed diagonally, so you move at 70% speed
-            horizontal *= moveLimiter;
-            vertical *= moveLimiter;
-        }
-
-        vehicle.body.velocity = new Vector2(horizontal * vehicle.speed, vertical * vehicle.speed);
-    }
 }
