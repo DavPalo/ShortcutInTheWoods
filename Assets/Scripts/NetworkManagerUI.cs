@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NetworkManagerUI : MonoBehaviour
@@ -10,24 +11,34 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
 
+    public static string userType;
+
     private void Awake()
     {
         serverBtn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartServer();
             Debug.Log("Server");
+            userType = "Server";
+            LoadNextScene();
         });
 
         clientBtn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
             Debug.Log("Client");
+            userType = "Client";
+            LoadNextScene();
         });
 
         hostBtn.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartHost();
             Debug.Log("Host");
+            userType = "Host";
+            LoadNextScene();
         });
+    }
+
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

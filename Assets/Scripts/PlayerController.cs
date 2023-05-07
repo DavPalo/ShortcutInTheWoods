@@ -48,7 +48,6 @@ public class PlayerController : NetworkBehaviour
         // Gives a value between -1 and 1
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
         vertical = Input.GetAxisRaw("Vertical"); // -1 is down
-
         
 
         if (!isDriving)
@@ -62,23 +61,6 @@ public class PlayerController : NetworkBehaviour
 
             body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
         }
-        else
-        {
-            vehicle.horizontal = horizontal;
-            vehicle.vertical = vertical;
-        }
-        /*else
-        {
-            if(horizontal != 0 || vertical != 0)
-            {
-                vehicle.speed += vehicle.acceleration * Time.deltaTime;
-            }
-            
-            vehicle.body.velocity = new Vector2(horizontal * vehicle.speed, vertical * vehicle.speed);
-
-        }*/
-
-
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -111,6 +93,7 @@ public class PlayerController : NetworkBehaviour
             body.bodyType = RigidbodyType2D.Kinematic;
             body.constraints = RigidbodyConstraints2D.FreezePosition;
             isShooting = true;
+            collision.gameObject.GetComponent<WeaponController>().enabled = true;
             actualCollider = collision.collider;
         }
     }
