@@ -333,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &440283078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,7 +913,7 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
-    TickRate: 30
+    TickRate: 50
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
@@ -993,7 +993,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1659509432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66cb902c89500a344a9fef6bd569d378, type: 3}
+  m_Script: {fileID: 11500000, guid: a9f2a0427fec6be4b9c8147a7c72d7ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serverBtn: {fileID: 1952441721}
@@ -1282,7 +1282,7 @@ Transform:
   m_GameObject: {fileID: 1852151525}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.24, y: 0.24, z: 0.24}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -1838,22 +1838,6 @@ PrefabInstance:
     - target: {fileID: 3295902777708557309, guid: a58b540e108fde6429899dd25559d9e9, type: 3}
       propertyPath: m_Name
       value: Vehicle
-      objectReference: {fileID: 0}
-    - target: {fileID: 3295902778479329980, guid: a58b540e108fde6429899dd25559d9e9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92387956
-      objectReference: {fileID: 0}
-    - target: {fileID: 3295902778479329980, guid: a58b540e108fde6429899dd25559d9e9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.38268343
-      objectReference: {fileID: 0}
-    - target: {fileID: 3295902778479329980, guid: a58b540e108fde6429899dd25559d9e9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 4983396919118847419, guid: a58b540e108fde6429899dd25559d9e9, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a58b540e108fde6429899dd25559d9e9, type: 3}

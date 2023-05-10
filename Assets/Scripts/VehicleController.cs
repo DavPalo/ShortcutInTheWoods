@@ -15,31 +15,41 @@ public class VehicleController : NetworkBehaviour
     public float currentSpeed;
     public float currentForwardDirection;
 
+    public bool someoneIsDriving;
+
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        this.enabled = false;
+        someoneIsDriving = false;
+        //this.enabled = false;
     }
 
     private void Update()
     {
-        movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        movementVector.Normalize();
-
-        if(movementVector.y > 0)
+        if(someoneIsDriving)
         {
-            currentForwardDirection = 1;
-        }
-        else if(movementVector.y < 0)
-        {
-            currentForwardDirection = 0;
-        }
+            movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            movementVector.Normalize();
 
-        if (Mathf.Abs(movementVector.y) != 0)
-            currentSpeed += acceleration * Time.deltaTime;
+            if(movementVector.y > 0)
+            {
+                currentForwardDirection = 1;
+            }
+            else if(movementVector.y < 0)
+            {
+                currentForwardDirection = 0;
+            }
+
+            if (Mathf.Abs(movementVector.y) != 0)
+                currentSpeed += acceleration * Time.deltaTime;
+            else
+                currentSpeed -= 2 * acceleration * Time.deltaTime;
+        }
         else
+        {
             currentSpeed -= 2 * acceleration * Time.deltaTime;
+        }
 
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
     }
@@ -47,6 +57,8 @@ public class VehicleController : NetworkBehaviour
     private void FixedUpdate()
     {
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
-        rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x* rotationSpeed * Time.fixedDeltaTime));
+        
+        if (someoneIsDriving)
+            rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
     }
 }

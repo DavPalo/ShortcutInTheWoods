@@ -32,17 +32,19 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
             body.bodyType = RigidbodyType2D.Dynamic;
-            body.constraints = RigidbodyConstraints2D.None;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation;
             StartCoroutine(IgnoreCollision());
             isDriving = false;
-            vehicle.enabled = false;
+            //vehicle.enabled = false;
+            vehicle.someoneIsDriving = false;
         }
         else if(Input.GetKeyDown(KeyCode.Space) && isShooting)
         {
             body.bodyType = RigidbodyType2D.Dynamic;
-            body.constraints = RigidbodyConstraints2D.None;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation;
             StartCoroutine(IgnoreCollision());
             isShooting = false;
+            actualCollider.gameObject.GetComponent<WeaponController>().someoneIsShooting = false;
         }
 
         // Gives a value between -1 and 1
@@ -69,6 +71,13 @@ public class PlayerController : NetworkBehaviour
         vehicle.GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeWeaponOwnerServerRpc()
+    {
+        Debug.Log("Actual collider -> " + actualCollider.gameObject.ToString());
+        //actualCollider.gameObject.GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
+    }
+
     IEnumerator IgnoreCollision()
     {
         Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), actualCollider, true);
@@ -83,8 +92,9 @@ public class PlayerController : NetworkBehaviour
             body.bodyType = RigidbodyType2D.Kinematic;
             body.constraints = RigidbodyConstraints2D.FreezePosition;
             isDriving = true;
-            actualCollider = collision.collider;
-            vehicle.enabled = true;
+            vehicle.someoneIsDriving = true;
+            actualCollider = collision.GetContact(0).collider;
+            //vehicle.enabled = true;
             ChangeOwnerServerRpc();
         }
 
@@ -93,8 +103,9 @@ public class PlayerController : NetworkBehaviour
             body.bodyType = RigidbodyType2D.Kinematic;
             body.constraints = RigidbodyConstraints2D.FreezePosition;
             isShooting = true;
-            collision.gameObject.GetComponent<WeaponController>().enabled = true;
-            actualCollider = collision.collider;
+            actualCollider = collision.GetContact(0).collider;
+            actualCollider.gameObject.GetComponent<WeaponController>().someoneIsShooting = true;
+            ChangeWeaponOwnerServerRpc();
         }
     }
 

@@ -211,6 +211,7 @@ MonoBehaviour:
   acceleration: 10
   currentSpeed: 0
   currentForwardDirection: 0
+  someoneIsDriving: 0
 --- !u!114 &3295902777708557285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,6 +293,7 @@ GameObject:
   - component: {fileID: 3295902778479329978}
   - component: {fileID: 3295902778479329981}
   - component: {fileID: 4983396919118847419}
+  - component: {fileID: 4860339930417538793}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -306,7 +308,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3295902778479329983}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.38268343, w: 0.92387956}
   m_LocalPosition: {x: 0.35, y: 0.35, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0}
   m_ConstrainProportionsScale: 0
@@ -314,7 +316,7 @@ Transform:
   - {fileID: 4983396919266090013}
   m_Father: {fileID: 3295902777708557306}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
 --- !u!212 &3295902778479329978
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -398,6 +400,33 @@ MonoBehaviour:
   rotationSpeed: 70
   minRotation: 0
   maxRotation: 0
+  someoneIsShooting: 0
+--- !u!114 &4860339930417538793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295902778479329983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df92282800d30734a8a40c9251b7f8fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
 --- !u!1 &3295902779157293089
 GameObject:
   m_ObjectHideFlags: 0
