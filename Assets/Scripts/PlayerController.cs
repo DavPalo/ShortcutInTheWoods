@@ -13,15 +13,17 @@ public class PlayerController : NetworkBehaviour
     public float runSpeed;
 
     public VehicleController vehicle;
+    public GameObject wheel;
 
     private bool isDriving = false;
     private bool isShooting = false;
-    private Collider2D actualCollider = null;
+    public Collider2D actualCollider = null;
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleController>();
+        wheel = GameObject.Find("Wheel");
         transform.parent = vehicle.transform;
     }
 
@@ -35,7 +37,6 @@ public class PlayerController : NetworkBehaviour
             body.constraints = RigidbodyConstraints2D.FreezeRotation;
             StartCoroutine(IgnoreCollision());
             isDriving = false;
-            //vehicle.enabled = false;
             vehicle.someoneIsDriving = false;
         }
         else if(Input.GetKeyDown(KeyCode.Space) && isShooting)
@@ -63,6 +64,8 @@ public class PlayerController : NetworkBehaviour
 
             body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
         }
+
+        Interact();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -83,9 +86,10 @@ public class PlayerController : NetworkBehaviour
         Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), actualCollider, true);
         yield return new WaitForSeconds(1);
         Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), actualCollider, false);
+        actualCollider = null;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.tag == "Wheel")
         {
@@ -94,7 +98,6 @@ public class PlayerController : NetworkBehaviour
             isDriving = true;
             vehicle.someoneIsDriving = true;
             actualCollider = collision.GetContact(0).collider;
-            //vehicle.enabled = true;
             ChangeOwnerServerRpc();
         }
 
@@ -105,7 +108,24 @@ public class PlayerController : NetworkBehaviour
             isShooting = true;
             actualCollider = collision.GetContact(0).collider;
             actualCollider.gameObject.GetComponent<WeaponController>().someoneIsShooting = true;
-            ChangeWeaponOwnerServerRpc();
+            //ChangeWeaponOwnerServerRpc();
+        }
+    }*/
+
+    private void Interact()
+    {
+        float distance = (transform.position - wheel.transform.position).magnitude;
+        Debug.Log(distance);
+        if (distance < 1)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                body.bodyType = RigidbodyType2D.Kinematic;
+                body.constraints = RigidbodyConstraints2D.FreezePosition;
+                isDriving = true;
+                vehicle.someoneIsDriving = true;
+                ChangeOwnerServerRpc();
+            }
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Vehicle : NetworkBehaviour
+public class Vehicle : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
