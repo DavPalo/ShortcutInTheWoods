@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Vehicle : MonoBehaviour
+public class Vehicle : NetworkBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
 
     public HealthBar healthBar;
 
+    public GameObject shield;
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        shield = GameObject.Find("Shield");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (collision.gameObject.tag == "Bullet" && shield.GetComponent<Shield>().activated == false)
         {
-            TakeDamage(20);
+            TakeDamage(5);
         }
     }
 
@@ -30,6 +32,6 @@ public class Vehicle : MonoBehaviour
     {
         currentHealth -= damage;
 
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealthClientRpc(currentHealth);
     }
 }

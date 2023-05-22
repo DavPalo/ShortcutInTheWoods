@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class VehicleControllerOff : MonoBehaviour
+public class VehicleControllerOff : NetworkBehaviour
 {
     public Rigidbody2D rb2d;
     public float maxSpeed;

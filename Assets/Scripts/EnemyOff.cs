@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyOff : MonoBehaviour
+public class EnemyOff : NetworkBehaviour
 {
     public GameObject vehicle;
+    public Rigidbody2D rb2d;
 
     public float health;
     public float attack;
@@ -14,10 +17,15 @@ public class EnemyOff : MonoBehaviour
     public bool canShoot;
     public float delayInSeconds;
 
+    public float minimumDesiredDistance;
+    public float maximumDesiredDistance;
+    public float speed;
+
     // Start is called before the first frame update
     void Start()
     {
         vehicle = GameObject.Find("Vehicle");
+        rb2d = GetComponent<Rigidbody2D>();
         canShoot = true;
     }
 
@@ -33,11 +41,40 @@ public class EnemyOff : MonoBehaviour
             Shoot();
     }
 
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Bullet")
         {
             TakeDamage(10);
+        }
+    }
+
+    public void Move()
+    {
+        // ROTATION
+        Vector3 point = vehicle.transform.position;
+        Vector3 axis = new Vector3(0, 0, 1);
+        transform.RotateAround(point, axis, Time.deltaTime * 10);
+
+        // MOVEMENT
+        float distance = (vehicle.transform.position - transform.position).magnitude;
+        Vector2 direction = vehicle.transform.position - transform.position;
+        if (distance > maximumDesiredDistance)
+        {
+            rb2d.velocity = direction * speed * Time.fixedDeltaTime;
+        }
+        else if(distance < minimumDesiredDistance)
+        {
+            rb2d.velocity = -direction * speed * Time.fixedDeltaTime;
+        }
+        else
+        {
+            rb2d.velocity = new Vector2(0, 0);
         }
     }
 
@@ -49,6 +86,8 @@ public class EnemyOff : MonoBehaviour
     public void Shoot()
     {
         GameObject bullet = Instantiate(this.bullet, transform.position, transform.rotation);
+        bullet.GetComponent<Bullet>().shooter = gameObject;
+        bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         Vector2 direction = vehicle.transform.position - transform.position;
 

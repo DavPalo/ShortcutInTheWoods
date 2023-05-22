@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerControllerOff : MonoBehaviour
+public class PlayerControllerOff : NetworkBehaviour
 {
     private Rigidbody2D body;
 
@@ -16,10 +17,12 @@ public class PlayerControllerOff : MonoBehaviour
     public GameObject wheel;
     public GameObject[] weapons;
     public int weaponIndex;
+    public GameObject shieldInteract;
+    public GameObject shield;
 
     private bool isDriving = false;
     private bool isShooting = false;
-    public Canvas interact;
+    public GameObject interact;
 
     void Start()
     {
@@ -27,12 +30,18 @@ public class PlayerControllerOff : MonoBehaviour
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleControllerOff>();
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
+        shieldInteract = GameObject.Find("Shield Interact");
+        shield = GameObject.Find("Shield");
         transform.parent = vehicle.transform;
-        interact.enabled = false;
+        interact = this.gameObject.transform.GetChild(0).gameObject;
+        interact.SetActive(false);
     }
 
     void Update()
     {
+        if (!IsOwner)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
             body.bodyType = RigidbodyType2D.Dynamic;
@@ -81,32 +90,56 @@ public class PlayerControllerOff : MonoBehaviour
         float minimumWeaponDistance = Mathf.Min(distanceToWeapons);
         weaponIndex = Array.IndexOf(distanceToWeapons, minimumWeaponDistance);
 
+        float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
+
         if (distanceToWheel < 0.2 && isDriving == false)
         {
-            interact.enabled = true;
+            interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
                 body.bodyType = RigidbodyType2D.Kinematic;
                 body.constraints = RigidbodyConstraints2D.FreezePosition;
                 isDriving = true;
                 vehicle.someoneIsDriving = true;
+                ChangeVehicleOwnerServerRpc();
             }
         }
         else if(minimumWeaponDistance < 0.2 && isShooting == false)
         {
-            interact.enabled = true;
+            interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
                 body.bodyType = RigidbodyType2D.Kinematic;
                 body.constraints = RigidbodyConstraints2D.FreezePosition;
                 isShooting = true;
                 weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = true;
+                ChangeWeaponOwnerServerRpc();
+            }
+        }
+        else if (distanceToShield < 0.2)
+        {
+            interact.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E) && shield.GetComponent<Shield>().activable)
+            {
+                shield.GetComponent<Shield>().activateShieldServerRpc();
             }
         }
         else
         {
-            interact.enabled = false;
+            interact.SetActive(false);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeVehicleOwnerServerRpc()
+    {
+        vehicle.GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeWeaponOwnerServerRpc()
+    {
+        weapons[weaponIndex].GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
     }
 
 }

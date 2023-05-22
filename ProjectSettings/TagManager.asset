@@ -8,6 +8,7 @@ TagManager:
   - Weapon
   - Vehicle
   - Bullet
+  - Shield
   layers:
   - Default
   - TransparentFX
