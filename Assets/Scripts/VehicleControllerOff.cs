@@ -17,6 +17,7 @@ public class VehicleControllerOff : NetworkBehaviour
 
     public bool someoneIsDriving;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,16 @@ public class VehicleControllerOff : NetworkBehaviour
     }
 
     private void Update()
+    {
+        Drive();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
+    public void Drive()
     {
         if (someoneIsDriving)
         {
@@ -53,7 +64,7 @@ public class VehicleControllerOff : NetworkBehaviour
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
     }
 
-    private void FixedUpdate()
+    public void Move()
     {
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
 

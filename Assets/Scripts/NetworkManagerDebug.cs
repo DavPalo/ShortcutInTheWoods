@@ -9,6 +9,7 @@ public class NetworkManagerDebug : MonoBehaviour
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
+    [SerializeField] private LevelManager levelManager;
 
     public static string userType;
 
@@ -30,6 +31,7 @@ public class NetworkManagerDebug : MonoBehaviour
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
+            levelManager.GetComponent<LevelManager>().enabled = true;
         });
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Vehicle : NetworkBehaviour
+public class Vehicle : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
@@ -24,7 +24,7 @@ public class Vehicle : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Bullet" && shield.GetComponent<Shield>().activated == false)
         {
-            TakeDamage(5);
+            TakeDamage(10);
         }
     }
 
@@ -33,5 +33,10 @@ public class Vehicle : NetworkBehaviour
         currentHealth -= damage;
 
         healthBar.SetHealthClientRpc(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            LevelManager.LoadGameOverScene();
+        }
     }
 }

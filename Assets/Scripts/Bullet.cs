@@ -6,18 +6,17 @@ using UnityEngine;
 public class Bullet : NetworkBehaviour
 {
     public GameObject shooter;
-    private Collider2D collider;
+    private Collider2D coll;
 
     private void Start()
     {
-        collider = GetComponent<Collider2D>();
-        //Collider2D shooterCollider = shooter.GetComponent<Collider2D>();
-        //Physics2D.IgnoreCollision(collider, shooterCollider, true);
+        coll = GetComponent<Collider2D>();
+        Collider2D shooterCollider = shooter.GetComponent<Collider2D>();
+        Physics2D.IgnoreCollision(coll, shooterCollider, true);
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //NetworkObject networkBullet = gameObject.GetComponent<NetworkObject>();
         DestroyClientRpc();
     }
 

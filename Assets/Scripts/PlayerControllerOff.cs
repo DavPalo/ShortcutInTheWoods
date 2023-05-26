@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerControllerOff : NetworkBehaviour
 {
-    private Rigidbody2D body;
+    private Rigidbody2D rb2d;
 
     private float horizontal;
     private float vertical;
@@ -24,11 +24,16 @@ public class PlayerControllerOff : NetworkBehaviour
     private bool isShooting = false;
     public GameObject interact;
 
+    public LevelManager levelManager;
+
     void Start()
     {
-        body = GetComponent<Rigidbody2D>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
+        rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleControllerOff>();
         wheel = GameObject.Find("Wheel");
+        //weapons = levelManager.weapons;
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         shieldInteract = GameObject.Find("Shield Interact");
         shield = GameObject.Find("Shield");
@@ -44,17 +49,19 @@ public class PlayerControllerOff : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
-            body.bodyType = RigidbodyType2D.Dynamic;
-            body.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb2d.bodyType = RigidbodyType2D.Dynamic;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             isDriving = false;
             vehicle.someoneIsDriving = false;
+            RemoveVehicleOwnerServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Space) && isShooting)
         {
-            body.bodyType = RigidbodyType2D.Dynamic;
-            body.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb2d.bodyType = RigidbodyType2D.Dynamic;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             isShooting = false;
             weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = false;
+            //RemoveWeaponOwnerServerRpc(weaponIndex);
         }
 
         // Gives a value between -1 and 1
@@ -71,7 +78,7 @@ public class PlayerControllerOff : NetworkBehaviour
                 vertical *= moveLimiter;
             }
 
-            body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+            rb2d.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
         }
 
         Interact();
@@ -97,11 +104,11 @@ public class PlayerControllerOff : NetworkBehaviour
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
-                body.bodyType = RigidbodyType2D.Kinematic;
-                body.constraints = RigidbodyConstraints2D.FreezePosition;
+                rb2d.bodyType = RigidbodyType2D.Kinematic;
+                rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
                 isDriving = true;
                 vehicle.someoneIsDriving = true;
-                ChangeVehicleOwnerServerRpc();
+                ChangeVehicleOwnerServerRpc(OwnerClientId);
             }
         }
         else if(minimumWeaponDistance < 0.2 && isShooting == false)
@@ -109,11 +116,10 @@ public class PlayerControllerOff : NetworkBehaviour
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
-                body.bodyType = RigidbodyType2D.Kinematic;
-                body.constraints = RigidbodyConstraints2D.FreezePosition;
+                rb2d.bodyType = RigidbodyType2D.Kinematic;
+                rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
                 isShooting = true;
                 weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = true;
-                ChangeWeaponOwnerServerRpc();
             }
         }
         else if (distanceToShield < 0.2)
@@ -131,16 +137,30 @@ public class PlayerControllerOff : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ChangeVehicleOwnerServerRpc()
+    public void ChangeVehicleOwnerServerRpc(ulong playerId)
     {
-        vehicle.GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
+        vehicle.GetComponent<NetworkObject>().ChangeOwnership(playerId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void ChangeWeaponOwnerServerRpc()
+    public void RemoveVehicleOwnerServerRpc()
     {
-        weapons[weaponIndex].GetComponent<NetworkObject>().ChangeOwnership(OwnerClientId);
+        vehicle.GetComponent<NetworkObject>().RemoveOwnership();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangeWeaponOwnerServerRpc(ulong playerId, int weaponIndex)
+    {
+        weapons[weaponIndex].GetComponent<NetworkObject>().ChangeOwnership(playerId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RemoveWeaponOwnerServerRpc(int weaponIndex)
+    {
+        weapons[weaponIndex].GetComponent<NetworkObject>().RemoveOwnership();
     }
 
 }
+
+
 

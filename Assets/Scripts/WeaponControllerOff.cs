@@ -16,7 +16,7 @@ public class WeaponControllerOff : NetworkBehaviour
     public GameObject bulletPrefab;
     public float bulletForce;
     public Transform firePoint;
-    public NetworkVariable<bool> canShoot;
+    public bool canShoot;
     public float shootDelay;
 
     private void Start()
@@ -24,18 +24,20 @@ public class WeaponControllerOff : NetworkBehaviour
         mainCamera = Camera.main;
         someoneIsShooting = false;
         vehicle = transform.parent;
-        canShoot.Value = true;
+        canShoot = true;
     }
 
     private void Update()
     {
+        if (!Application.isFocused)
+            return;
         if (someoneIsShooting)
         {
             Aim();
 
-            if (Input.GetButton("Fire1") && canShoot.Value)
+            if (Input.GetButton("Fire1") && canShoot)
             {
-                ShootServerRpc();
+                Shoot();
             }
         }
     }
@@ -52,35 +54,37 @@ public class WeaponControllerOff : NetworkBehaviour
 
         float rotationStep = rotationSpeed * Time.deltaTime;
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
-        //transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-
-        AimClientRpc(angle, rotationStep);
+        AimServerRpc(angle, rotationStep);
     }
 
-    [ClientRpc]
-    public void AimClientRpc(float angle, float rotationStep)
+    [ServerRpc(RequireOwnership = false)]
+    public void AimServerRpc(float angle, float rotationStep)
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
     }
 
+    public void Shoot()
+    {
+        canShoot = false;
+        StartCoroutine(ShootCoroutine());
+        ShootServerRpc();
+    }
 
     [ServerRpc(RequireOwnership = false)]
     public void ShootServerRpc()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        //bullet.GetComponent<Bullet>().shooter = gameObject;
+        bullet.GetComponent<Bullet>().shooter = gameObject;
         bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);
-        canShoot.Value = false;
-        StartCoroutine(ShootCoroutine());
+        
     }
 
     IEnumerator ShootCoroutine()
     {
         yield return new WaitForSeconds(shootDelay);
-        canShoot.Value = true;
+        canShoot = true;
     }
 
 }
