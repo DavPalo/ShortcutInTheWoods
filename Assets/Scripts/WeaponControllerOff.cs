@@ -10,7 +10,7 @@ public class WeaponControllerOff : NetworkBehaviour
     public float rotationSpeed;
     public float baseRotation;
 
-    public bool someoneIsShooting;
+    public NetworkVariable<bool> someoneIsShooting;
     public Transform vehicle;
 
     public GameObject bulletPrefab;
@@ -22,16 +22,14 @@ public class WeaponControllerOff : NetworkBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        someoneIsShooting = false;
+        someoneIsShooting.Value = false;
         vehicle = transform.parent;
         canShoot = true;
     }
 
     private void Update()
     {
-        if (!Application.isFocused)
-            return;
-        if (someoneIsShooting)
+        if (someoneIsShooting.Value)
         {
             Aim();
 
@@ -74,7 +72,7 @@ public class WeaponControllerOff : NetworkBehaviour
     public void ShootServerRpc()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        bullet.GetComponent<Bullet>().shooter = gameObject;
+        bullet.GetComponent<Bullet>().shooter = LevelManager.vehicle;
         bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);

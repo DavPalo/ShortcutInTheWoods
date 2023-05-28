@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,9 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
+    public TMP_InputField inputField;
+
+    public static string nickname;
 
     public static string userType;
 
@@ -26,6 +30,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Client");
             userType = "Client";
+            nickname = inputField.text;
             LoadNextScene();
         });
 
@@ -33,6 +38,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Host");
             userType = "Host";
+            nickname = inputField.text;
             LoadNextScene();
         });
     }

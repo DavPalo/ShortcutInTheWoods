@@ -5,9 +5,14 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : NetworkBehaviour
 {
-    /*void Start()
+    public static GameObject[] players;
+    public static GameObject vehicle;
+    public static GameObject[] weapons;
+    [SerializeField] GameObject enemyPrefab;
+
+    private void Start()
     {
         if (NetworkManagerUI.userType == "Server")
             NetworkManager.Singleton.StartServer();
@@ -15,25 +20,22 @@ public class LevelManager : MonoBehaviour
             NetworkManager.Singleton.StartClient();
         else if (NetworkManagerUI.userType == "Host")
             NetworkManager.Singleton.StartHost();
-    }*/
 
-    public static GameObject[] players;
-    public GameObject vehicle;
-    public static GameObject[] weapons;
-    [SerializeField] GameObject enemyPrefab;
+        Debug.Log("Is server ? - " + IsServer);
 
-    private void Start()
-    {
-        players = GameObject.FindGameObjectsWithTag("Player");
-        vehicle = GameObject.Find("Vehicle");
-        weapons = GameObject.FindGameObjectsWithTag("Weapon");
-        for (int i = 0; i < weapons.Length; i++)
+        if(IsServer)
         {
-            weapons[i].transform.parent = vehicle.transform;
+            players = GameObject.FindGameObjectsWithTag("Player");
+            vehicle = GameObject.Find("Vehicle");
+            weapons = GameObject.FindGameObjectsWithTag("Weapon");
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].transform.parent = vehicle.transform;
+            }
         }
 
-        GameObject enemy = Instantiate(enemyPrefab);
-        enemy.GetComponent<NetworkObject>().Spawn(true);
+        //GameObject enemy = Instantiate(enemyPrefab);
+        //enemy.GetComponent<NetworkObject>().Spawn(true);
 
     }
 

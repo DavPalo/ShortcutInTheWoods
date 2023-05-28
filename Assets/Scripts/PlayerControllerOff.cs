@@ -52,7 +52,7 @@ public class PlayerControllerOff : NetworkBehaviour
             rb2d.bodyType = RigidbodyType2D.Dynamic;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             isDriving = false;
-            vehicle.someoneIsDriving = false;
+            
             RemoveVehicleOwnerServerRpc();
         }
         else if (Input.GetKeyDown(KeyCode.Space) && isShooting)
@@ -60,8 +60,8 @@ public class PlayerControllerOff : NetworkBehaviour
             rb2d.bodyType = RigidbodyType2D.Dynamic;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             isShooting = false;
-            weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = false;
-            //RemoveWeaponOwnerServerRpc(weaponIndex);
+
+            RemoveWeaponOwnerServerRpc();
         }
 
         // Gives a value between -1 and 1
@@ -99,7 +99,7 @@ public class PlayerControllerOff : NetworkBehaviour
 
         float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
 
-        if (distanceToWheel < 0.2 && isDriving == false)
+        if (distanceToWheel < 0.2 && isDriving == false && !vehicle.someoneIsDriving.Value)
         {
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
@@ -107,11 +107,11 @@ public class PlayerControllerOff : NetworkBehaviour
                 rb2d.bodyType = RigidbodyType2D.Kinematic;
                 rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
                 isDriving = true;
-                vehicle.someoneIsDriving = true;
                 ChangeVehicleOwnerServerRpc(OwnerClientId);
             }
         }
-        else if(minimumWeaponDistance < 0.2 && isShooting == false)
+        else if(minimumWeaponDistance < 0.2 && isShooting == false &&
+                !weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value)
         {
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
@@ -119,7 +119,7 @@ public class PlayerControllerOff : NetworkBehaviour
                 rb2d.bodyType = RigidbodyType2D.Kinematic;
                 rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
                 isShooting = true;
-                weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = true;
+                ChangeWeaponOwnerServerRpc();
             }
         }
         else if (distanceToShield < 0.2)
@@ -139,25 +139,27 @@ public class PlayerControllerOff : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ChangeVehicleOwnerServerRpc(ulong playerId)
     {
+        vehicle.someoneIsDriving.Value = true;
         vehicle.GetComponent<NetworkObject>().ChangeOwnership(playerId);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void RemoveVehicleOwnerServerRpc()
     {
+        vehicle.someoneIsDriving.Value = false;
         vehicle.GetComponent<NetworkObject>().RemoveOwnership();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ChangeWeaponOwnerServerRpc(ulong playerId, int weaponIndex)
+    public void ChangeWeaponOwnerServerRpc()
     {
-        weapons[weaponIndex].GetComponent<NetworkObject>().ChangeOwnership(playerId);
+        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value = true;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void RemoveWeaponOwnerServerRpc(int weaponIndex)
+    public void RemoveWeaponOwnerServerRpc()
     {
-        weapons[weaponIndex].GetComponent<NetworkObject>().RemoveOwnership();
+        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value = false;
     }
 
 }

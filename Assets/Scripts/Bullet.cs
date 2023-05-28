@@ -10,9 +10,12 @@ public class Bullet : NetworkBehaviour
 
     private void Start()
     {
-        coll = GetComponent<Collider2D>();
-        Collider2D shooterCollider = shooter.GetComponent<Collider2D>();
-        Physics2D.IgnoreCollision(coll, shooterCollider, true);
+        if (shooter != LevelManager.vehicle)
+        {
+            coll = GetComponent<Collider2D>();
+            Collider2D shooterCollider = shooter.GetComponent<Collider2D>();
+            Physics2D.IgnoreCollision(coll, shooterCollider, true);
+        }
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
