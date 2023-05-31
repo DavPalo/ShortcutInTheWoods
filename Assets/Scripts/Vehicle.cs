@@ -12,9 +12,13 @@ public class Vehicle : MonoBehaviour
 
     public GameObject shield;
 
+    public LevelManager levelManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         shield = GameObject.Find("Shield");
@@ -36,7 +40,7 @@ public class Vehicle : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            LevelManager.LoadGameOverScene();
+            levelManager.LoadGameOverScene();
         }
     }
 }

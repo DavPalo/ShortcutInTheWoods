@@ -10,7 +10,7 @@ public class WeaponControllerOff : NetworkBehaviour
     public float rotationSpeed;
     public float baseRotation;
 
-    public NetworkVariable<bool> someoneIsShooting;
+    public bool someoneIsShooting;
     public Transform vehicle;
 
     public GameObject bulletPrefab;
@@ -22,14 +22,14 @@ public class WeaponControllerOff : NetworkBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        someoneIsShooting.Value = false;
-        vehicle = transform.parent;
+        someoneIsShooting = false;
+        //vehicle = transform.parent;
         canShoot = true;
     }
 
     private void Update()
     {
-        if (someoneIsShooting.Value)
+        if (someoneIsShooting)
         {
             Aim();
 

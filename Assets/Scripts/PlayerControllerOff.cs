@@ -99,7 +99,7 @@ public class PlayerControllerOff : NetworkBehaviour
 
         float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
 
-        if (distanceToWheel < 0.2 && isDriving == false && !vehicle.someoneIsDriving.Value)
+        if (distanceToWheel < 0.2 && isDriving == false /*&& !vehicle.someoneIsDriving*/)
         {
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
@@ -110,8 +110,8 @@ public class PlayerControllerOff : NetworkBehaviour
                 ChangeVehicleOwnerServerRpc(OwnerClientId);
             }
         }
-        else if(minimumWeaponDistance < 0.2 && isShooting == false &&
-                !weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value)
+        else if(minimumWeaponDistance < 0.2 && isShooting == false /*&&
+                !weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting*/)
         {
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
@@ -139,27 +139,27 @@ public class PlayerControllerOff : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ChangeVehicleOwnerServerRpc(ulong playerId)
     {
-        vehicle.someoneIsDriving.Value = true;
+        vehicle.someoneIsDriving = true;
         vehicle.GetComponent<NetworkObject>().ChangeOwnership(playerId);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void RemoveVehicleOwnerServerRpc()
     {
-        vehicle.someoneIsDriving.Value = false;
+        vehicle.someoneIsDriving = false;
         vehicle.GetComponent<NetworkObject>().RemoveOwnership();
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void ChangeWeaponOwnerServerRpc()
     {
-        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value = true;
+        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = true;
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void RemoveWeaponOwnerServerRpc()
     {
-        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting.Value = false;
+        weapons[weaponIndex].GetComponent<WeaponControllerOff>().someoneIsShooting = false;
     }
 
 }

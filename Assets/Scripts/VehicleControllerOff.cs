@@ -15,14 +15,14 @@ public class VehicleControllerOff : NetworkBehaviour
     public float currentSpeed;
     public float currentForwardDirection;
 
-    public NetworkVariable<bool> someoneIsDriving;
+    public bool someoneIsDriving;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        someoneIsDriving.Value = false;
+        someoneIsDriving = false;
     }
 
     private void Update()
@@ -37,7 +37,7 @@ public class VehicleControllerOff : NetworkBehaviour
 
     public void Drive()
     {
-        if (someoneIsDriving.Value)
+        if (someoneIsDriving)
         {
             movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             movementVector.Normalize();
@@ -68,7 +68,7 @@ public class VehicleControllerOff : NetworkBehaviour
     {
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
 
-        if (someoneIsDriving.Value)
+        if (someoneIsDriving)
             rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
     }
 }

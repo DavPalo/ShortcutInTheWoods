@@ -7,19 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : NetworkBehaviour
 {
-    public static GameObject[] players;
+    public GameObject[] players;
     public static GameObject vehicle;
-    public static GameObject[] weapons;
+    public GameObject[] weapons;
     [SerializeField] GameObject enemyPrefab;
 
     private void Start()
     {
-        if (NetworkManagerUI.userType == "Server")
-            NetworkManager.Singleton.StartServer();
-        else if (NetworkManagerUI.userType == "Client")
-            NetworkManager.Singleton.StartClient();
-        else if (NetworkManagerUI.userType == "Host")
-            NetworkManager.Singleton.StartHost();
+        for(int i = 0; i < NetworkManagerUI.players.Count; i++)
+        {
+            if (NetworkManagerUI.players[i].userType == "Host")
+                NetworkManager.Singleton.StartHost();
+            else if(NetworkManagerUI.players[i].userType == "Client")
+                NetworkManager.Singleton.StartClient();
+        }
 
         Debug.Log("Is server ? - " + IsServer);
 
@@ -39,7 +40,7 @@ public class LevelManager : NetworkBehaviour
 
     }
 
-    public static void LoadGameOverScene()
+    public void LoadGameOverScene()
     {
         for(int i = 0; i < players.Length; i++)
         {

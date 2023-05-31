@@ -13,32 +13,33 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button hostBtn;
     public TMP_InputField inputField;
 
-    public static string nickname;
-
-    public static string userType;
+    public static List<Player> players = new List<Player>();
 
     private void Awake()
     {
         serverBtn.onClick.AddListener(() =>
         {
             Debug.Log("Server");
-            userType = "Server";
             LoadNextScene();
         });
 
         clientBtn.onClick.AddListener(() =>
         {
             Debug.Log("Client");
-            userType = "Client";
-            nickname = inputField.text;
-            LoadNextScene();
+            /*if (players.Exists(x => x.userType == "Host"))
+            {
+                Debug.Log("ESISTE");
+            }*/
+                Player player = new Player("Client", inputField.text);
+                players.Add(player);
+                LoadNextScene();
         });
 
         hostBtn.onClick.AddListener(() =>
         {
             Debug.Log("Host");
-            userType = "Host";
-            nickname = inputField.text;
+            Player player = new Player("Host", inputField.text);
+            players.Add(player);
             LoadNextScene();
         });
     }
