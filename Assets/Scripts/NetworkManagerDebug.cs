@@ -10,28 +10,24 @@ public class NetworkManagerDebug : MonoBehaviour
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
     [SerializeField] private LevelManager levelManager;
-
-    public static string userType;
+    [SerializeField] private Canvas start;
+    
 
     private void Awake()
     {
-        serverBtn.onClick.AddListener(() =>
-        {
-            Debug.Log("Server");
-            NetworkManager.Singleton.StartServer();
-        });
-
         clientBtn.onClick.AddListener(() =>
         {
             Debug.Log("Client");
             NetworkManager.Singleton.StartClient();
+            gameObject.SetActive(false);
         });
 
         hostBtn.onClick.AddListener(() =>
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
-            levelManager.GetComponent<LevelManager>().enabled = true;
+            levelManager.enabled = true;
+            gameObject.SetActive(false);
         });
     }
 }

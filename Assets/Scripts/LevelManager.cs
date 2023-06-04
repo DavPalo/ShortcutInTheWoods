@@ -5,51 +5,50 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : NetworkBehaviour
 {
-    /*void Start()
-    {
-        if (NetworkManagerUI.userType == "Server")
-            NetworkManager.Singleton.StartServer();
-        else if (NetworkManagerUI.userType == "Client")
-            NetworkManager.Singleton.StartClient();
-        else if (NetworkManagerUI.userType == "Host")
-            NetworkManager.Singleton.StartHost();
-    }*/
+    public static List<Player> players;
 
-    public static GameObject[] players;
     public GameObject vehicle;
     public static GameObject[] weapons;
     [SerializeField] GameObject enemyPrefab;
 
+    public static bool startGame;
+    public static bool gameOver;
+
+    [SerializeField] ProjectSceneManager projectSceneManager;
+
     private void Start()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
+        startGame = false;
+        gameOver = false;
         vehicle = GameObject.Find("Vehicle");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].transform.parent = vehicle.transform;
         }
+        if(IsServer)
+        {
+            GameObject enemy = Instantiate(enemyPrefab);
+            enemy.GetComponent<NetworkObject>().Spawn(true);
 
-        GameObject enemy = Instantiate(enemyPrefab);
-        enemy.GetComponent<NetworkObject>().Spawn(true);
-
+        }
     }
 
-    public static void LoadGameOverScene()
+    private void Update()
     {
-        for(int i = 0; i < players.Length; i++)
-        {
-            Destroy(players[i]);
-        }
+        if(gameOver)
+            projectSceneManager.ChangeScene();
+    }
 
-        for(int i = 0; i < weapons.Length; i++)
-        {
-            Destroy(weapons[i]);
-        }
-
-        SceneManager.LoadScene("Game Over");
+    public static void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    public static void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 
 }

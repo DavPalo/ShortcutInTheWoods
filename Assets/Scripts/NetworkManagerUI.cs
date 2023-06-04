@@ -4,41 +4,35 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class NetworkManagerUI : MonoBehaviour
 {
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
+    [SerializeField] private TMP_InputField inputField;
 
-    public static string userType;
+    [SerializeField] private Canvas startCanvas;
+    [SerializeField] private Canvas readyCanvas;
 
     private void Awake()
     {
-        serverBtn.onClick.AddListener(() =>
-        {
-            Debug.Log("Server");
-            userType = "Server";
-            LoadNextScene();
-        });
-
         clientBtn.onClick.AddListener(() =>
         {
             Debug.Log("Client");
-            userType = "Client";
-            LoadNextScene();
+            NetworkManager.Singleton.StartClient();
+            readyCanvas.gameObject.SetActive(true);
+            transform.parent.gameObject.SetActive(false);
         });
 
         hostBtn.onClick.AddListener(() =>
         {
             Debug.Log("Host");
-            userType = "Host";
-            LoadNextScene();
+            NetworkManager.Singleton.StartHost();
+            LevelManager.PauseGame();
+            startCanvas.gameObject.SetActive(true);
+            transform.parent.gameObject.SetActive(false);
         });
-    }
-
-    private void LoadNextScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

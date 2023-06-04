@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Vehicle : MonoBehaviour
+public class Vehicle : NetworkBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
@@ -26,6 +27,16 @@ public class Vehicle : MonoBehaviour
         {
             TakeDamage(10);
         }
+
+        if (collision.gameObject.tag == "Enemy" && shield.GetComponent<Shield>().activated == false)
+        {
+            TakeDamage(collision.gameObject.GetComponent<EnemyOff>().attack);
+        }
+
+        if (collision.gameObject.tag == "Enemy2" && shield.GetComponent<Shield>().activated == false)
+        {
+            TakeDamage(collision.gameObject.GetComponent<Enemy2>().attack);
+        }
     }
 
     void TakeDamage(int damage)
@@ -36,7 +47,9 @@ public class Vehicle : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            LevelManager.LoadGameOverScene();
+            LevelManager.gameOver = true;
         }
     }
+
+    
 }

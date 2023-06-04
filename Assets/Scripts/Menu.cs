@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    private void Start()
+    public void MainMenu()
     {
         GameObject networkManager = GameObject.Find("NetworkManager");
         Destroy(networkManager);
-    }
-    public void MainMenu()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex -1);
+        SceneManager.LoadScene(0);
     }
 }

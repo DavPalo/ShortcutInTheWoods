@@ -9,7 +9,7 @@ public class EnemyOff : NetworkBehaviour
     public Rigidbody2D rb2d;
 
     public float health;
-    public float attack;
+    public int attack;
 
     public GameObject bullet;
     public float bulletForce;
@@ -26,18 +26,22 @@ public class EnemyOff : NetworkBehaviour
         vehicle = GameObject.Find("Vehicle");
         rb2d = GetComponent<Rigidbody2D>();
         canShoot = true;
+        Debug.Log("Enemy is Server? - " + IsServer);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0)
+        if(IsServer)
         {
-            Destroy(gameObject);
-        }
+            if(health <= 0)
+            {
+                gameObject.GetComponent<NetworkObject>().Despawn();
+            }
 
-        if(canShoot)
-            Shoot();
+            if(canShoot)
+                Shoot();
+        }
     }
 
     private void FixedUpdate()
