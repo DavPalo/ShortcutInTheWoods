@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class WeaponControllerOff : NetworkBehaviour
+public class WeaponController : NetworkBehaviour
 {
     Camera mainCamera;
     public float rotationSpeed;
@@ -18,6 +18,7 @@ public class WeaponControllerOff : NetworkBehaviour
     public Transform firePoint;
     public bool canShoot;
     public float shootDelay;
+    public int bulletDamage;
 
     private void Start()
     {
@@ -29,8 +30,6 @@ public class WeaponControllerOff : NetworkBehaviour
 
     private void Update()
     {
-        if (!Application.isFocused)
-            return;
         if (someoneIsShooting)
         {
             Aim();
@@ -74,7 +73,8 @@ public class WeaponControllerOff : NetworkBehaviour
     public void ShootServerRpc()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        bullet.GetComponent<Bullet>().shooter = gameObject;
+        //bullet.GetComponent<Bullet>().shooter = gameObject;
+        bullet.GetComponent<Bullet>().damage = bulletDamage;
         bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);
@@ -87,5 +87,10 @@ public class WeaponControllerOff : NetworkBehaviour
         canShoot = true;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void changeSomeoneIsShootingServerRpc(bool boolean)
+    {
+        someoneIsShooting = boolean;
+    }
 }
 

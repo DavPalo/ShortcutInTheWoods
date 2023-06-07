@@ -7,6 +7,7 @@ public class Bullet : NetworkBehaviour
 {
     public GameObject shooter;
     private Collider2D coll;
+    public int damage;
 
     private void Start()
     {
@@ -20,7 +21,8 @@ public class Bullet : NetworkBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DestroyClientRpc();
+        NetworkObject.Despawn();
+        //DestroyClientRpc();
     }
 
     [ClientRpc]

@@ -32,7 +32,7 @@ public class Treasure : NetworkBehaviour
         if(health == 0)
         {
             goosUpdate.updateGoosClientRpc(value);
-            gameObject.GetComponent<NetworkObject>().Despawn();
+            NetworkObject.Despawn();
         }
     }
 }

@@ -113,11 +113,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4719465867447878035}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -141,7 +141,8 @@ MonoBehaviour:
   vehicle: {fileID: 0}
   rb2d: {fileID: 0}
   health: 100
-  attack: 0
+  attack: 10
+  bulletDamage: 5
   bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
   bulletForce: 0.5
   canShoot: 0

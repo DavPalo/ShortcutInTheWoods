@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class VehicleControllerOff : NetworkBehaviour
+public class VehicleController : NetworkBehaviour
 {
     public Rigidbody2D rb2d;
     public float maxSpeed;
@@ -15,19 +15,20 @@ public class VehicleControllerOff : NetworkBehaviour
     public float currentSpeed;
     public float currentForwardDirection;
 
-    public bool someoneIsDriving;
+    public NetworkVariable<bool> someoneIsDriving;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        someoneIsDriving = false;
+        someoneIsDriving.Value = false;
     }
 
     private void Update()
     {
-        Drive();
+        if(IsOwner)
+            Drive();
     }
 
     private void FixedUpdate()
@@ -37,7 +38,7 @@ public class VehicleControllerOff : NetworkBehaviour
 
     public void Drive()
     {
-        if (someoneIsDriving)
+        if (someoneIsDriving.Value)
         {
             movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             movementVector.Normalize();
@@ -68,8 +69,14 @@ public class VehicleControllerOff : NetworkBehaviour
     {
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
 
-        if (someoneIsDriving)
+        if (someoneIsDriving.Value)
             rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void changeSomeoneIsDrivingServerRpc(bool boolean)
+    {
+        someoneIsDriving.Value = boolean;
     }
 }
 

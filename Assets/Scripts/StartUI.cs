@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StartUI : MonoBehaviour
+public class StartUI : NetworkBehaviour
 {
     [SerializeField] private Button startBtn;
     [SerializeField] private LevelManager levelManager;
@@ -13,8 +13,17 @@ public class StartUI : MonoBehaviour
     {
         startBtn.onClick.AddListener(() =>
         {
-            levelManager.enabled = true;
             LevelManager.ResumeGame();
+
+            for(int i  = 0; i < LevelManager.players.Count; i++)
+            {
+                if (LevelManager.players[i].userType == "Client")
+                {
+                    Debug.Log(LevelManager.players[i].nickname);
+                    LevelManager.players[i].readyCanvas.gameObject.SetActive(false);
+                }
+            }
+
             gameObject.SetActive(false);
         });
     }

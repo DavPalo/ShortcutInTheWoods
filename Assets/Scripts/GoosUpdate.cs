@@ -14,8 +14,8 @@ public class GoosUpdate : NetworkBehaviour
         if (goos != null)
         {
             int actualGoos = int.Parse(goos.text);
-            int newGoos = actualGoos + value;
-            goos.text = newGoos.ToString();
+            actualGoos += value;
+            goos.text = actualGoos.ToString();
         }
     }
 }

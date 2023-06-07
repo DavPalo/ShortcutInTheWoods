@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class NetworkManagerUI : MonoBehaviour
+public class NetworkManagerUI : NetworkBehaviour
 {
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button clientBtn;
@@ -16,13 +16,14 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Canvas startCanvas;
     [SerializeField] private Canvas readyCanvas;
 
+    [SerializeField] private LevelManager levelManager;
+
     private void Awake()
     {
         clientBtn.onClick.AddListener(() =>
         {
             Debug.Log("Client");
             NetworkManager.Singleton.StartClient();
-            readyCanvas.gameObject.SetActive(true);
             transform.parent.gameObject.SetActive(false);
         });
 
@@ -30,8 +31,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
-            LevelManager.PauseGame();
-            startCanvas.gameObject.SetActive(true);
+            levelManager.enabled = true;
             transform.parent.gameObject.SetActive(false);
         });
     }

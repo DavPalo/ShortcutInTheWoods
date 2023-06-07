@@ -14,8 +14,8 @@ public class HealthBar : NetworkBehaviour
         slider.value = health;
     }
 
-    //[ClientRpc]
-    public void SetMaxHealth(int health)
+    [ClientRpc]
+    public void SetMaxHealthClientRpc(int health)
     {
         slider.maxValue = health;
         slider.value = health;

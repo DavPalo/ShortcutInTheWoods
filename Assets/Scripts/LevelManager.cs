@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : NetworkBehaviour
 {
-    public static List<Player> players;
+    public static List<Player> players = new List<Player>();
 
     public GameObject vehicle;
     public static GameObject[] weapons;
@@ -28,13 +28,32 @@ public class LevelManager : NetworkBehaviour
         {
             weapons[i].transform.parent = vehicle.transform;
         }
-        if(IsServer)
+        if (IsServer)
         {
-            GameObject enemy = Instantiate(enemyPrefab);
-            enemy.GetComponent<NetworkObject>().Spawn(true);
+            //GameObject enemy = Instantiate(enemyPrefab);
+            //enemy.GetComponent<NetworkObject>().Spawn(true);
 
         }
     }
+
+    /*public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        startGame = false;
+        gameOver = false;
+        vehicle = GameObject.Find("Vehicle");
+        weapons = GameObject.FindGameObjectsWithTag("Weapon");
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            weapons[i].transform.parent = vehicle.transform;
+        }
+        if (IsServer)
+        {
+            //GameObject enemy = Instantiate(enemyPrefab);
+            //enemy.GetComponent<NetworkObject>().Spawn(true);
+
+        }
+    }*/
 
     private void Update()
     {

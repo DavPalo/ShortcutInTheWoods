@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class Vehicle : NetworkBehaviour
 {
-    public int maxHealth = 100;
-    public int currentHealth;
+    public NetworkVariable<int> maxHealth = new NetworkVariable<int>(100,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<int> currentHealth = new NetworkVariable<int>(100,
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     public HealthBar healthBar;
 
@@ -16,8 +18,10 @@ public class Vehicle : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        maxHealth.Value = 100;
+        currentHealth.Value = maxHealth.Value;
+        healthBar.SetMaxHealthClientRpc(maxHealth.Value);
+
         shield = GameObject.Find("Shield");
     }
 
@@ -25,12 +29,12 @@ public class Vehicle : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Bullet" && shield.GetComponent<Shield>().activated == false)
         {
-            TakeDamage(10);
+            TakeDamage(collision.gameObject.GetComponent<Bullet>().damage);
         }
 
         if (collision.gameObject.tag == "Enemy" && shield.GetComponent<Shield>().activated == false)
         {
-            TakeDamage(collision.gameObject.GetComponent<EnemyOff>().attack);
+            TakeDamage(collision.gameObject.GetComponent<Enemy>().attack);
         }
 
         if (collision.gameObject.tag == "Enemy2" && shield.GetComponent<Shield>().activated == false)
@@ -41,15 +45,30 @@ public class Vehicle : NetworkBehaviour
 
     void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        currentHealth.Value -= damage;
 
-        healthBar.SetHealthClientRpc(currentHealth);
+        healthBar.SetHealthClientRpc(currentHealth.Value);
 
-        if (currentHealth <= 0)
+        if (currentHealth.Value <= 0)
         {
             LevelManager.gameOver = true;
         }
     }
 
-    
+    public void Repair(int healing)
+    {
+        currentHealth.Value += healing;
+
+        if(currentHealth.Value > maxHealth.Value)
+            currentHealth.Value = maxHealth.Value;
+            
+        healthBar.SetHealthClientRpc(currentHealth.Value);
+    }
+
+    public void Increase(int health)
+    {
+        maxHealth.Value += health;
+        currentHealth.Value = maxHealth.Value;
+        healthBar.SetMaxHealthClientRpc(maxHealth.Value);
+    }
 }
