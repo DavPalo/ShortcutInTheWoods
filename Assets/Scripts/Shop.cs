@@ -12,47 +12,37 @@ public class Shop : MonoBehaviour
     public int repairCost;
     public int increaseHealthCost;
 
-    public TextMeshProUGUI goos;
+    public TextMeshProUGUI goosText;
 
     public Vehicle vehicle;
+    public LevelManager levelManager;
 
     private void Start()
     {
         vehicle = GameObject.Find("Vehicle").GetComponent<Vehicle>();
-        goos = GameObject.Find("N").GetComponent<TextMeshProUGUI>();
+        goosText = GameObject.Find("N").GetComponent<TextMeshProUGUI>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         repairBtn.onClick.AddListener(() =>
         {
-            RepairClientRpc();
+            Repair();
         });
 
         increaseHealthBtn.onClick.AddListener(() =>
         {
-            IncreaseClientRpc(); 
+            Increase(); 
         });
     }
 
-    [ClientRpc]
-    public void RepairClientRpc()
+    
+    public void Repair()
     {
-        int actualGoos = int.Parse(goos.text);
-        if (actualGoos >= repairCost && vehicle.currentHealth.Value < vehicle.maxHealth.Value)
-        {
-            vehicle.Repair(50);
-            actualGoos -= repairCost;
-            goos.text = actualGoos.ToString();
-        }
+        levelManager.updateGoosClientRpc(-5);
     }
 
-    [ClientRpc]
-    public void IncreaseClientRpc()
+    
+    public void Increase()
     {
-        int actualGoos = int.Parse(goos.text);
-        if (actualGoos >= increaseHealthCost)
-        {
-            vehicle.Increase(50);
-            actualGoos -= increaseHealthCost;
-            goos.text = actualGoos.ToString();
-        }
+        levelManager.updateGoosClientRpc(-10);
     }
 }

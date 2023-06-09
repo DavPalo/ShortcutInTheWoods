@@ -6,15 +6,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class NetworkManagerUI : NetworkBehaviour
+public class NetworkManagerUI : MonoBehaviour
 {
-    [SerializeField] private Button serverBtn;
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
     [SerializeField] private TMP_InputField inputField;
-
-    [SerializeField] private Canvas startCanvas;
-    [SerializeField] private Canvas readyCanvas;
 
     [SerializeField] private LevelManager levelManager;
 

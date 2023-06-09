@@ -7,10 +7,11 @@ public class Treasure : NetworkBehaviour
 {
     public int health;
     public int value;
-    [SerializeField] GoosUpdate goosUpdate;
+    public LevelManager levelManager;
 
     private void Start()
     {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         value = Random.Range(30, 60);
     }
 
@@ -31,8 +32,9 @@ public class Treasure : NetworkBehaviour
     {
         if(health == 0)
         {
-            goosUpdate.updateGoosClientRpc(value);
-            NetworkObject.Despawn();
+            levelManager.updateGoosClientRpc(value);
+            if(IsServer)
+                NetworkObject.Despawn();
         }
     }
 }

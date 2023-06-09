@@ -4,18 +4,21 @@ using UnityEngine;
 using Unity.Netcode;
 using TMPro;
 
-public class GoosUpdate : NetworkBehaviour
+public class GoosUpdate : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI goos;
+    [SerializeField] TextMeshProUGUI goosText;
+
+    private void Update()
+    {
+        updateGoosTextClientRpc();
+    }
 
     [ClientRpc]
-    public void updateGoosClientRpc(int value)
+    public void updateGoosTextClientRpc()
     {
-        if (goos != null)
+        if (goosText != null)
         {
-            int actualGoos = int.Parse(goos.text);
-            actualGoos += value;
-            goos.text = actualGoos.ToString();
+            goosText.text = LevelManager.goos.Value.ToString();
         }
     }
 }
