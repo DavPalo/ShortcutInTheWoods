@@ -30,9 +30,9 @@ public class Treasure : NetworkBehaviour
 
     private void Update()
     {
-        if(health == 0)
+        if(health <= 0)
         {
-            levelManager.updateGoosClientRpc(value);
+            levelManager.updateGoosServerRpc(value);
             if(IsServer)
                 NetworkObject.Despawn();
         }

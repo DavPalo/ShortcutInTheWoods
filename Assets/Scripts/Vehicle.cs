@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 public class Vehicle : NetworkBehaviour
 {
     public NetworkVariable<int> maxHealth = new NetworkVariable<int>(100,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<int> currentHealth = new NetworkVariable<int>(100,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public HealthBar healthBar;
 
@@ -55,7 +55,8 @@ public class Vehicle : NetworkBehaviour
         }
     }
 
-    public void Repair(int healing)
+    [ClientRpc]
+    public void RepairClientRpc(int healing)
     {
         currentHealth.Value += healing;
 
@@ -65,7 +66,8 @@ public class Vehicle : NetworkBehaviour
         healthBar.SetHealthClientRpc(currentHealth.Value);
     }
 
-    public void Increase(int health)
+    [ClientRpc]
+    public void IncreaseClientRpc(int health)
     {
         maxHealth.Value += health;
         currentHealth.Value = maxHealth.Value;

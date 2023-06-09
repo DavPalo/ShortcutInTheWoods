@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,15 +17,19 @@ public class LevelManager : NetworkBehaviour
 
     public static NetworkVariable<int> goos = new NetworkVariable<int>(0,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [SerializeField] TextMeshProUGUI goosText;
 
     private void Start()
     {
         gameOver = false;
         vehicle = GameObject.Find("Vehicle");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
-        for (int i = 0; i < weapons.Length; i++)
+        if(IsServer)
         {
-            weapons[i].transform.parent = vehicle.transform;
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].transform.parent = vehicle.transform;
+            }
         }
         if (IsServer)
         {
@@ -49,9 +54,19 @@ public class LevelManager : NetworkBehaviour
         Time.timeScale = 1;
     }
 
-    [ClientRpc]
-    public void updateGoosClientRpc(int value)
+    [ServerRpc(RequireOwnership = false)]
+    public void updateGoosServerRpc(int value)
     {
         goos.Value += value;
+        updateGoosTextClientRpc();
+    }
+
+    [ClientRpc]
+    public void updateGoosTextClientRpc()
+    {
+        if (goosText != null)
+        {
+            goosText.text = goos.Value.ToString();
+        }
     }
 }

@@ -21,7 +21,8 @@ public class Bullet : NetworkBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        NetworkObject.Despawn();
+        if (IsServer)
+            NetworkObject.Despawn();
         //DestroyClientRpc();
     }
 

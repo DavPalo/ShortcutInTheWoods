@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using TMPro;
 
-public class GoosUpdate : MonoBehaviour
+public class GoosUpdate : NetworkBehaviour
 {
     [SerializeField] TextMeshProUGUI goosText;
 

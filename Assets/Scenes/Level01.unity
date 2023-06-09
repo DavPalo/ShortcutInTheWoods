@@ -2099,6 +2099,7 @@ MonoBehaviour:
   vehicle: {fileID: 0}
   enemyPrefab: {fileID: 4719465867447878035, guid: 3879574d1eafb764abb9663d37053ca3, type: 3}
   projectSceneManager: {fileID: 751568485}
+  goosText: {fileID: 197299844}
 --- !u!4 &751568483
 Transform:
   m_ObjectHideFlags: 0
@@ -2934,7 +2935,7 @@ PrefabInstance:
     - target: {fileID: 451317015, guid: 11d0a04372d721848a8e074ed787b689, type: 3}
       propertyPath: goosUpdate
       value: 
-      objectReference: {fileID: 1378004775}
+      objectReference: {fileID: 0}
     - target: {fileID: 8217159956016725573, guid: 11d0a04372d721848a8e074ed787b689, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3719,8 +3720,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378004774}
-  - component: {fileID: 1378004775}
-  - component: {fileID: 1378004776}
   m_Layer: 5
   m_Name: Goos
   m_TagString: Untagged
@@ -3750,35 +3749,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1378004775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378004773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f7525334a3697846a129e0c9e3df854, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goosText: {fileID: 197299844}
---- !u!114 &1378004776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378004773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1285072244
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1419532215
 GameObject:
   m_ObjectHideFlags: 0
