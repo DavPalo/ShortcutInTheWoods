@@ -26,9 +26,11 @@ public class PlayerController : NetworkBehaviour
     public float distanceToInteract;
 
     public GameObject shop;
+    public LevelManager levelManager;
 
     void Start()
     {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleController>();
         wheel = GameObject.Find("Wheel");
@@ -40,7 +42,12 @@ public class PlayerController : NetworkBehaviour
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
 
-        shop = this.gameObject.transform.GetChild(1).gameObject;
+        if (IsOwner)
+        {
+            shop = GameObject.Find("Canvas Shop");
+            shop.SetActive(false);
+
+        }
     }
 
     void Update()

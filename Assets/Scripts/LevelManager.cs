@@ -15,8 +15,7 @@ public class LevelManager : NetworkBehaviour
 
     [SerializeField] ProjectSceneManager projectSceneManager;
 
-    public static NetworkVariable<int> goos = new NetworkVariable<int>(0,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    public NetworkVariable<int> goos = new NetworkVariable<int>(0);
     [SerializeField] TextMeshProUGUI goosText;
 
     private void Start()

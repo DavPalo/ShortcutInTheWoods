@@ -22,7 +22,7 @@ public class Shop : MonoBehaviour
 
         repairBtn.onClick.AddListener(() =>
         {
-            RepairServerRpc();
+            Repair();
         });
 
         increaseHealthBtn.onClick.AddListener(() =>
@@ -32,15 +32,12 @@ public class Shop : MonoBehaviour
     }
 
 
-    [ServerRpc(RequireOwnership = false)]
-    public void RepairServerRpc()
+    
+    public void Repair()
     {
-        Debug.Log("RepairServerRpc called");
         if (vehicle.currentHealth.Value < vehicle.maxHealth.Value)
         {
-            Debug.Log("Inside if");
-            levelManager.updateGoosServerRpc(-5);
-            Debug.Log("netvar updated");
+            levelManager.updateGoosServerRpc(repairCost);
             vehicle.RepairClientRpc(50);
         }
     }
@@ -48,8 +45,7 @@ public class Shop : MonoBehaviour
     
     public void Increase()
     {
-        Debug.Log("Increase called");
-        levelManager.updateGoosServerRpc(-10);
+        levelManager.updateGoosServerRpc(increaseHealthCost);
         vehicle.IncreaseClientRpc(50);
     }
 }
