@@ -24,7 +24,7 @@ public class Enemy2 : NetworkBehaviour
     {
         if (health <= 0)
         {
-            gameObject.GetComponent<NetworkObject>().Despawn();
+            NetworkObject.Despawn();
         }
     }
 
@@ -46,7 +46,7 @@ public class Enemy2 : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            TakeDamage(10);
+            TakeDamage(collision.gameObject.GetComponent<Bullet>().damage);
         }
     }
 

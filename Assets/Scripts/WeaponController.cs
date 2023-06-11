@@ -8,7 +8,6 @@ public class WeaponController : NetworkBehaviour
 {
     Camera mainCamera;
     public float rotationSpeed;
-    public float baseRotation;
 
     public bool someoneIsShooting;
     public Transform vehicle;

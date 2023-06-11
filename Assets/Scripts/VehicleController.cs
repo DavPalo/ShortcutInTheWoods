@@ -79,4 +79,3 @@ public class VehicleController : NetworkBehaviour
         someoneIsDriving.Value = boolean;
     }
 }
-

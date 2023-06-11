@@ -48,6 +48,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Terrain
+    uniqueID: 2100953491
+    locked: 0
   - name: Vehicle
     uniqueID: 982395625
     locked: 0

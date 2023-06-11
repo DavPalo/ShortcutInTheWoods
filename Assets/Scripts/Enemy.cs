@@ -54,7 +54,7 @@ public class Enemy : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            TakeDamage(10);
+            TakeDamage(collision.gameObject.GetComponent<Bullet>().damage);
         }
     }
 

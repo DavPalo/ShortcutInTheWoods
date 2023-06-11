@@ -1,10 +1,9 @@
-
 using Unity.Netcode;
 using UnityEngine;
 
 public class LevelManager : NetworkBehaviour
 {
-    public NetworkVariable<int> networkHealt;
+    public NetworkVariable<int> networkHealth;
     public NetworkVariable<int> networkGoos;
 
     public GameObject GoosText;
@@ -14,7 +13,7 @@ public class LevelManager : NetworkBehaviour
     {
         if (IsServer)
         {
-            networkHealt.Value = 100;
+            networkHealth.Value = 100;
             networkGoos.Value = 0;
         }
     }
@@ -37,14 +36,14 @@ public class LevelManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void updateLifeServerRpc(int value)
     {
-        networkHealt.Value += value;
-        HealtBar.GetComponent<HealthBar>().SetHealthClientRpc(networkHealt.Value);
+        networkHealth.Value += value;
+        HealtBar.GetComponent<HealthBar>().SetHealthClientRpc(networkHealth.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void increaseLifeServerRpc(int value)
     {
-        networkHealt.Value += value;
-        HealtBar.GetComponent<HealthBar>().SetMaxHealthClientRpc(networkHealt.Value);
+        networkHealth.Value += value;
+        HealtBar.GetComponent<HealthBar>().SetMaxHealthClientRpc(networkHealth.Value);
     }
 }

@@ -21,9 +21,7 @@ public class Wheel : MonoBehaviour
     void Update()
     {
         if (player) {
-            Debug.Log("Player");
             if (player.isDriving) {
-                Debug.Log("PlayerIsDriving");
                 if (Input.GetKeyDown(KeyCode.Q)) {
                     active = !active;
                     shop.gameObject.SetActive(active);
@@ -37,9 +35,5 @@ public class Wheel : MonoBehaviour
         if (collision.collider.gameObject.tag == "Player") {
             player = collision.collider.GetComponent<PlayerController>();
         }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
     }
 }

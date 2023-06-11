@@ -56,7 +56,7 @@ public class Vehicle : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
+    /*[ClientRpc]
     public void RepairClientRpc(int healing)
     {
         currentHealth.Value += healing;
@@ -73,5 +73,5 @@ public class Vehicle : NetworkBehaviour
         maxHealth.Value += health;
         currentHealth.Value = maxHealth.Value;
         healthBar.SetMaxHealthClientRpc(maxHealth.Value);
-    }
+    }*/
 }
