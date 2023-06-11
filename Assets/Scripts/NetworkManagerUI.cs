@@ -20,7 +20,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Client");
             NetworkManager.Singleton.StartClient();
-            levelManager.enabled = true;
+            //levelManager.enabled = true;
             transform.parent.gameObject.SetActive(false);
         });
 
@@ -28,7 +28,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
-            levelManager.enabled = true;
+            //levelManager.enabled = true;
             transform.parent.gameObject.SetActive(false);
         });
     }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
 
-public class Shop : MonoBehaviour
+public class Shop : NetworkBehaviour
 {
     [SerializeField] private Button repairBtn;
     [SerializeField] private Button increaseHealthBtn;

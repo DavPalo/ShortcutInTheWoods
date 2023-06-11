@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : NetworkBehaviour
 {
     public GameObject vehicle;
-    public static GameObject[] weapons;
+    public GameObject[] weapons;
     [SerializeField] GameObject enemyPrefab;
     public static bool gameOver;
 
@@ -18,7 +18,7 @@ public class LevelManager : NetworkBehaviour
     public NetworkVariable<int> goos = new NetworkVariable<int>(0);
     [SerializeField] TextMeshProUGUI goosText;
 
-    private void Start()
+    /*private void Start()
     {
         gameOver = false;
         vehicle = GameObject.Find("Vehicle");
@@ -36,21 +36,33 @@ public class LevelManager : NetworkBehaviour
             //enemy.GetComponent<NetworkObject>().Spawn(true);
 
         }
+    }*/
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        gameOver = false;
+        vehicle = GameObject.Find("Vehicle");
+        weapons = GameObject.FindGameObjectsWithTag("Weapon");
+        if (IsServer)
+        {
+            /*for (int i = 0; i < weapons.Length; i++)
+            {
+                weapons[i].transform.parent = vehicle.transform;
+            }*/
+        }
+        if (IsServer)
+        {
+            //GameObject enemy = Instantiate(enemyPrefab);
+            //enemy.GetComponent<NetworkObject>().Spawn(true);
+
+        }
     }
 
     private void Update()
     {
         if(gameOver)
             projectSceneManager.ChangeScene();
-    }
-
-    public static void PauseGame()
-    {
-        Time.timeScale = 0;
-    }
-    public static void ResumeGame()
-    {
-        Time.timeScale = 1;
     }
 
     [ServerRpc(RequireOwnership = false)]
