@@ -15,12 +15,15 @@ public class Vehicle : NetworkBehaviour
 
     public GameObject shield;
 
+    public LevelManager levelManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         maxHealth.Value = 100;
         currentHealth.Value = maxHealth.Value;
-        healthBar.SetMaxHealthClientRpc(maxHealth.Value);
+        //healthBar.SetMaxHealthClientRpc(maxHealth.Value);
 
         shield = GameObject.Find("Shield");
     }
@@ -45,13 +48,11 @@ public class Vehicle : NetworkBehaviour
 
     void TakeDamage(int damage)
     {
-        currentHealth.Value -= damage;
-
-        healthBar.SetHealthClientRpc(currentHealth.Value);
+        levelManager.updateLifeServerRpc(-damage);
 
         if (currentHealth.Value <= 0)
         {
-            LevelManager.gameOver = true;
+            //GAMEOVER
         }
     }
 

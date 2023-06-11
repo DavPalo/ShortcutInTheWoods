@@ -1,83 +1,50 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelManager : NetworkBehaviour
 {
-    public GameObject vehicle;
-    public GameObject[] weapons;
-    [SerializeField] GameObject enemyPrefab;
-    public static bool gameOver;
+    public NetworkVariable<int> networkHealt;
+    public NetworkVariable<int> networkGoos;
 
-    [SerializeField] ProjectSceneManager projectSceneManager;
+    public GameObject GoosText;
+    public GameObject HealtBar;
 
-    public NetworkVariable<int> goos = new NetworkVariable<int>(0);
-    [SerializeField] TextMeshProUGUI goosText;
-
-    /*private void Start()
+    private void Start()
     {
-        gameOver = false;
-        vehicle = GameObject.Find("Vehicle");
-        weapons = GameObject.FindGameObjectsWithTag("Weapon");
-        if(IsServer)
-        {
-            for (int i = 0; i < weapons.Length; i++)
-            {
-                weapons[i].transform.parent = vehicle.transform;
-            }
-        }
         if (IsServer)
         {
-            //GameObject enemy = Instantiate(enemyPrefab);
-            //enemy.GetComponent<NetworkObject>().Spawn(true);
-
-        }
-    }*/
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        gameOver = false;
-        vehicle = GameObject.Find("Vehicle");
-        weapons = GameObject.FindGameObjectsWithTag("Weapon");
-        if (IsServer)
-        {
-            /*for (int i = 0; i < weapons.Length; i++)
-            {
-                weapons[i].transform.parent = vehicle.transform;
-            }*/
-        }
-        if (IsServer)
-        {
-            //GameObject enemy = Instantiate(enemyPrefab);
-            //enemy.GetComponent<NetworkObject>().Spawn(true);
-
+            networkHealt.Value = 100;
+            networkGoos.Value = 0;
         }
     }
 
     private void Update()
     {
-        if(gameOver)
-            projectSceneManager.ChangeScene();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            updateLifeServerRpc(-10);
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void updateGoosServerRpc(int value)
     {
-        goos.Value += value;
-        updateGoosTextClientRpc();
+        networkGoos.Value += value;
+        GoosText.GetComponent<GoosUpdate>().updateGoosTextClientRpc(networkGoos.Value);
     }
 
-    [ClientRpc]
-    public void updateGoosTextClientRpc()
+    [ServerRpc(RequireOwnership = false)]
+    public void updateLifeServerRpc(int value)
     {
-        if (goosText != null)
-        {
-            goosText.text = goos.Value.ToString();
-        }
+        networkHealt.Value += value;
+        HealtBar.GetComponent<HealthBar>().SetHealthClientRpc(networkHealt.Value);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void increaseLifeServerRpc(int value)
+    {
+        networkHealt.Value += value;
+        HealtBar.GetComponent<HealthBar>().SetMaxHealthClientRpc(networkHealt.Value);
     }
 }

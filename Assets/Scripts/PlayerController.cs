@@ -20,12 +20,12 @@ public class PlayerController : NetworkBehaviour
     public GameObject shieldInteract;
     public GameObject shield;
 
-    private bool isDriving = false;
+    public bool isDriving = false;
     private bool isShooting = false;
     public GameObject interact;
     public float distanceToInteract;
 
-    public GameObject shop;
+    public bool shop;
     public LevelManager levelManager;
 
     void Start()
@@ -41,29 +41,12 @@ public class PlayerController : NetworkBehaviour
 
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
-
-        if (IsOwner)
-        {
-            shop = GameObject.Find("Canvas Shop");
-            shop.SetActive(false);
-
-        }
     }
 
     void Update()
     {
         if (!IsOwner)
             return;
-
-        if (isDriving && Input.GetKeyDown(KeyCode.Q))
-        {
-            if(!shop.activeSelf)
-                shop.SetActive(true);
-            else
-                shop.SetActive(false);
-        }
-        else if(isDriving && Input.GetKeyDown(KeyCode.Space))
-            shop.SetActive(false);
 
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
