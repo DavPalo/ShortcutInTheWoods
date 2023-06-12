@@ -6,25 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class Vehicle : NetworkBehaviour
 {
-    public NetworkVariable<int> maxHealth = new NetworkVariable<int>(100,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-    public NetworkVariable<int> currentHealth = new NetworkVariable<int>(100,
-        NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
-    public HealthBar healthBar;
-
-    public GameObject shield;
-
     public LevelManager levelManager;
+    public GameObject shield;
 
     // Start is called before the first frame update
     void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        maxHealth.Value = 100;
-        currentHealth.Value = maxHealth.Value;
-        //healthBar.SetMaxHealthClientRpc(maxHealth.Value);
-
         shield = GameObject.Find("Shield");
     }
 
@@ -48,30 +36,12 @@ public class Vehicle : NetworkBehaviour
 
     void TakeDamage(int damage)
     {
-        levelManager.updateLifeServerRpc(-damage);
+        levelManager.updateHealthServerRpc(-damage);
 
-        if (currentHealth.Value <= 0)
+        // Game Over
+        if (levelManager.networkHealth.Value <= 0)
         {
-            //GAMEOVER
+            //levelManager.projectSceneManager.ChangeScene();
         }
     }
-
-    /*[ClientRpc]
-    public void RepairClientRpc(int healing)
-    {
-        currentHealth.Value += healing;
-
-        if(currentHealth.Value > maxHealth.Value)
-            currentHealth.Value = maxHealth.Value;
-            
-        healthBar.SetHealthClientRpc(currentHealth.Value);
-    }
-
-    [ClientRpc]
-    public void IncreaseClientRpc(int health)
-    {
-        maxHealth.Value += health;
-        currentHealth.Value = maxHealth.Value;
-        healthBar.SetMaxHealthClientRpc(maxHealth.Value);
-    }*/
 }

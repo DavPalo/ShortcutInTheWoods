@@ -10,12 +10,12 @@ public class Shop : MonoBehaviour
     [SerializeField] private Button increaseHealthBtn;
     public int repairCost;
     public int increaseHealthCost;
-    LevelManager lobby;
+    LevelManager levelManager;
 
     private void Start()
     {
         gameObject.SetActive(false);
-        lobby = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         repairBtn.onClick.AddListener(() =>
         {
@@ -30,13 +30,21 @@ public class Shop : MonoBehaviour
 
     public void Repair()
     {
-        lobby.updateLifeServerRpc(10);
-        lobby.updateGoosServerRpc(-10);
+        if(levelManager.networkGoos.Value >= repairCost && levelManager.networkHealth.Value < levelManager.networkMaxHealth.Value)
+        {
+            levelManager.updateHealthServerRpc(10);
+            levelManager.updateGoosServerRpc(-repairCost);
+
+        }
     }
 
     public void Increase()
     {
-        lobby.increaseLifeServerRpc(10);
-        lobby.updateGoosServerRpc(-10);
+        if (levelManager.networkGoos.Value >= increaseHealthCost)
+        {
+            levelManager.increaseHealthServerRpc(10);
+            levelManager.updateGoosServerRpc(-increaseHealthCost);
+
+        }
     }
 }

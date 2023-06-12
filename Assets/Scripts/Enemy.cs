@@ -7,12 +7,12 @@ public class Enemy : NetworkBehaviour
 {
     public GameObject vehicle;
     public Rigidbody2D rb2d;
+    public GameObject bullet;
 
     public int health;
     public int attack;
     public int bulletDamage;
 
-    public GameObject bullet;
     public float bulletForce;
     public bool canShoot;
     public float delayInSeconds;
@@ -37,7 +37,7 @@ public class Enemy : NetworkBehaviour
         {
             if(health <= 0)
             {
-                gameObject.GetComponent<NetworkObject>().Despawn();
+                NetworkObject.Despawn();
             }
 
             if(canShoot)
@@ -47,7 +47,7 @@ public class Enemy : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        //Move();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -60,10 +60,12 @@ public class Enemy : NetworkBehaviour
 
     public void Move()
     {
+        /*
         // ROTATION
         Vector3 point = vehicle.transform.position;
         Vector3 axis = new Vector3(0, 0, 1);
         transform.RotateAround(point, axis, Time.deltaTime * 10);
+        */
 
         // MOVEMENT
         float distance = (vehicle.transform.position - transform.position).magnitude;

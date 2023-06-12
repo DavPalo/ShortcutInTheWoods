@@ -50,9 +50,9 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
-            rb2d.bodyType = RigidbodyType2D.Dynamic;
-            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+            rb2d.simulated = true;
             isDriving = false;
+            GetComponent<Collider2D>().enabled = true;
             vehicle.changeSomeoneIsDrivingServerRpc(false);
             RemoveVehicleOwnerServerRpc();
         }
@@ -105,8 +105,8 @@ public class PlayerController : NetworkBehaviour
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
-                rb2d.bodyType = RigidbodyType2D.Kinematic;
-                rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
+                rb2d.simulated = false;
+                GetComponent<Collider2D>().enabled = false;
                 isDriving = true;
                 vehicle.changeSomeoneIsDrivingServerRpc(true);
                 ChangeVehicleOwnerServerRpc(OwnerClientId);

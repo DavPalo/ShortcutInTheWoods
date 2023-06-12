@@ -76,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1035752675
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.1641509, g: 0.96723926, b: 1, a: 1}
@@ -140,16 +140,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vehicle: {fileID: 0}
   rb2d: {fileID: 0}
+  bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
   health: 100
   attack: 10
-  bulletDamage: 5
-  bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  bulletForce: 0.5
+  bulletDamage: 10
+  bulletForce: 5
   canShoot: 0
   delayInSeconds: 1
   minimumDesiredDistance: 1
   maximumDesiredDistance: 1.5
-  speed: 3
+  speed: 10
 --- !u!114 &4719465867447878047
 MonoBehaviour:
   m_ObjectHideFlags: 0
