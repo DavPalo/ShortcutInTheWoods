@@ -5,14 +5,14 @@ using Unity.Netcode;
 
 public class Enemy2 : NetworkBehaviour
 {
-    public GameObject vehicle;
-    public Rigidbody2D rb2d;
+    private GameObject vehicle;
+    private Rigidbody2D rb2d;
 
     public float health;
     public int attack;
 
     public float speed;
-    public float range;
+    public float distanceToEngage;
 
     void Start()
     {
@@ -31,10 +31,10 @@ public class Enemy2 : NetworkBehaviour
     public void FixedUpdate()
     {
         //get the distance between the player and enemy (this object)
-        float dist = (vehicle.transform.position - transform.position).magnitude;
+        float distance = (vehicle.transform.position - transform.position).magnitude;
         Vector2 direction = vehicle.transform.position - transform.position;
         //check if it is within the range you set
-        if (dist <= range)
+        if (distance <= distanceToEngage)
         {
             //move to target(player) 
             rb2d.velocity = direction * speed * Time.fixedDeltaTime;
@@ -47,6 +47,10 @@ public class Enemy2 : NetworkBehaviour
         if (collision.gameObject.tag == "Bullet")
         {
             TakeDamage(collision.gameObject.GetComponent<Bullet>().damage);
+        }
+        if(collision.gameObject.tag == "Vehicle")
+        {
+            NetworkObject.Despawn();
         }
     }
 

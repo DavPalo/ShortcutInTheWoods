@@ -25,7 +25,10 @@ public class Vehicle : NetworkBehaviour
 
         if (collision.gameObject.tag == "Enemy" && shield.GetComponent<Shield>().activated == false)
         {
-            TakeDamage(collision.gameObject.GetComponent<Enemy>().attack);
+            if(collision.gameObject.TryGetComponent<Enemy>(out Enemy enemy))
+                TakeDamage(collision.gameObject.GetComponent<Enemy>().attack);
+            else
+                TakeDamage(collision.gameObject.GetComponent<Boss>().attack);
         }
 
         if (collision.gameObject.tag == "Enemy2" && shield.GetComponent<Shield>().activated == false)

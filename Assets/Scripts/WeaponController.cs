@@ -52,43 +52,9 @@ public class WeaponController : NetworkBehaviour
 
         float angle = Mathf.Atan2(mouseScreenPos.y, mouseScreenPos.x) * Mathf.Rad2Deg;
 
-        float vehicleAngle = vehicle.transform.rotation.eulerAngles.z;
-
-        float max = vehicleAngle + baseRotation + 60f, min = vehicleAngle + baseRotation - 60f;
-
-        Debug.Log("Pre ----min: " + min + "\nmax: " + max);
-
-        if (max >= 180f)
-            max = (max % 180) - 180f;
-        
-        if (min <= -180f)
-            min = (min % 180) + 180f;
-
-        if (max < min)
-        {
-            float temp = min;
-            min = max;
-            max = temp;
-
-        }
-
-        Debug.Log("min: " + min + "\nmax: " + max);
-        angle = Mathf.Clamp(angle, min, max);
-
-
-        Debug.Log("Angle " + angle);
-
         float rotationStep = rotationSpeed * Time.deltaTime;
 
         AimServerRpc(angle, rotationStep);
-    }
-
-    public static float ClampAngle(float angle, float min, float max) {
-        if (angle < -360.0)
-            angle += 360.0f;
-        if (angle > 360.0)
-            angle -= 360.0f;
-        return Mathf.Clamp(angle, min, max);
     }
 
     [ServerRpc(RequireOwnership = false)]

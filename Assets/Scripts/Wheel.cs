@@ -6,16 +6,9 @@ using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
-    PlayerController player = null;
+    public PlayerController player = null;
     bool active = false;
     public Canvas shop;
-    public VehicleController Buggy;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Buggy = GameObject.FindGameObjectWithTag("Vehicle").GetComponent<VehicleController>();
-    }
 
     // Update is called once per frame
     void Update()
@@ -27,13 +20,6 @@ public class Wheel : MonoBehaviour
                     shop.gameObject.SetActive(active);
                 }
             }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.gameObject.tag == "Player") {
-            player = collision.collider.GetComponent<PlayerController>();
         }
     }
 }

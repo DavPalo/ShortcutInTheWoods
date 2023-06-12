@@ -105,6 +105,7 @@ public class PlayerController : NetworkBehaviour
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
+                wheel.GetComponent<Wheel>().player = this;
                 rb2d.simulated = false;
                 GetComponent<Collider2D>().enabled = false;
                 isDriving = true;
