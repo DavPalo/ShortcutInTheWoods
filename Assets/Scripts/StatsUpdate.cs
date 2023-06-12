@@ -7,6 +7,7 @@ public class StatsUpdate : NetworkBehaviour
 {
     [SerializeField] TextMeshProUGUI health;
     public LevelManager levelManager;
+    private string toShow = "";
 
     private void Start()
     {
@@ -15,19 +16,7 @@ public class StatsUpdate : NetworkBehaviour
 
     private void Update()
     {
-        if (IsServer)
-        {
-            updateHealthTextClientRpc(levelManager.networkHealth.Value);
-            Debug.Log("HH");
-        }
-    }
-
-    [ClientRpc]
-    public void updateHealthTextClientRpc(int value)
-    {
-        if (health != null)
-        {
-            health.text = value.ToString();
-        }
+        toShow = levelManager.networkHealth.Value.ToString() + " / " + levelManager.networkMaxHealth.Value.ToString();
+        health.text = toShow;
     }
 }

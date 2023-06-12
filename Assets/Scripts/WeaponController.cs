@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class WeaponController : NetworkBehaviour
 {
     Camera mainCamera;
     public float rotationSpeed;
+    public float baseRotation;
 
     public bool someoneIsShooting;
     public Transform vehicle;
@@ -23,8 +25,9 @@ public class WeaponController : NetworkBehaviour
     {
         mainCamera = Camera.main;
         someoneIsShooting = false;
-        vehicle = transform.parent;
         canShoot = true;
+        vehicle = transform.parent;
+        baseRotation = transform.localRotation.eulerAngles.z;
     }
 
     private void Update()
@@ -48,11 +51,44 @@ public class WeaponController : NetworkBehaviour
         mouseScreenPos.y -= startingScreenPos.y;
 
         float angle = Mathf.Atan2(mouseScreenPos.y, mouseScreenPos.x) * Mathf.Rad2Deg;
-        //angle = Mathf.Clamp(angle, baseRotation - 60f, baseRotation + 60f);
+
+        float vehicleAngle = vehicle.transform.rotation.eulerAngles.z;
+
+        float max = vehicleAngle + baseRotation + 60f, min = vehicleAngle + baseRotation - 60f;
+
+        Debug.Log("Pre ----min: " + min + "\nmax: " + max);
+
+        if (max >= 180f)
+            max = (max % 180) - 180f;
+        
+        if (min <= -180f)
+            min = (min % 180) + 180f;
+
+        if (max < min)
+        {
+            float temp = min;
+            min = max;
+            max = temp;
+
+        }
+
+        Debug.Log("min: " + min + "\nmax: " + max);
+        angle = Mathf.Clamp(angle, min, max);
+
+
+        Debug.Log("Angle " + angle);
 
         float rotationStep = rotationSpeed * Time.deltaTime;
 
         AimServerRpc(angle, rotationStep);
+    }
+
+    public static float ClampAngle(float angle, float min, float max) {
+        if (angle < -360.0)
+            angle += 360.0f;
+        if (angle > 360.0)
+            angle -= 360.0f;
+        return Mathf.Clamp(angle, min, max);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -90,6 +126,13 @@ public class WeaponController : NetworkBehaviour
     public void changeSomeoneIsShootingServerRpc(bool boolean)
     {
         someoneIsShooting = boolean;
+    }
+
+    static public float ModularClamp(float val, float min, float max, float rangemin = -180f, float rangemax = 180f)
+    {
+        var modulus = Mathf.Abs(rangemax - rangemin);
+        if ((val %= modulus) < 0f) val += modulus;
+        return Mathf.Clamp(val + Mathf.Min(rangemin, rangemax), min, max);
     }
 }
 

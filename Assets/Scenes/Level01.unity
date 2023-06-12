@@ -173,13 +173,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 70
+  baseRotation: 0
   someoneIsShooting: 0
   vehicle: {fileID: 0}
   bulletPrefab: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  bulletForce: 10
+  bulletForce: 5
   firePoint: {fileID: 1838328780}
   canShoot: 0
-  shootDelay: 1
+  shootDelay: 0.3
   bulletDamage: 5
 --- !u!212 &13624126
 SpriteRenderer:
@@ -1853,6 +1854,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 1197847823903760418, guid: 57c572d60129f884198b3cc4aba4cbc7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1197847823903760860, guid: 57c572d60129f884198b3cc4aba4cbc7, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2314,7 +2319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1104302730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2759,8 +2764,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2839,7 +2844,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1352051417}
   - component: {fileID: 1352051418}
-  - component: {fileID: 1352051419}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -2854,7 +2858,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352051416}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.4, z: 0}
   m_ConstrainProportionsScale: 0
@@ -2914,32 +2918,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1352051419
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352051416}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.35, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &1419532215
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,13 +2968,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 70
+  baseRotation: 0
   someoneIsShooting: 0
   vehicle: {fileID: 0}
   bulletPrefab: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  bulletForce: 10
+  bulletForce: 5
   firePoint: {fileID: 220262211}
   canShoot: 0
-  shootDelay: 1
+  shootDelay: 0.3
   bulletDamage: 5
 --- !u!212 &1419532219
 SpriteRenderer:
@@ -3384,7 +3363,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913193482}
-  m_LocalRotation: {x: -0, y: -0, z: 0.92387956, w: 0.38268343}
+  m_LocalRotation: {x: 0, y: 0, z: 0.92387956, w: 0.38268343}
   m_LocalPosition: {x: -0.35, y: 0.35, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0}
   m_ConstrainProportionsScale: 0
@@ -3407,13 +3386,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 70
+  baseRotation: 0
   someoneIsShooting: 0
   vehicle: {fileID: 0}
   bulletPrefab: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  bulletForce: 10
+  bulletForce: 5
   firePoint: {fileID: 681742581}
   canShoot: 0
-  shootDelay: 1
+  shootDelay: 0.3
   bulletDamage: 5
 --- !u!212 &1913193486
 SpriteRenderer:
@@ -4000,8 +3980,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4642,13 +4622,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 70
+  baseRotation: 0
   someoneIsShooting: 0
   vehicle: {fileID: 0}
   bulletPrefab: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  bulletForce: 10
+  bulletForce: 5
   firePoint: {fileID: 1200603168}
   canShoot: 0
-  shootDelay: 1
+  shootDelay: 0.3
   bulletDamage: 5
 --- !u!114 &7536196755913456331
 MonoBehaviour:
