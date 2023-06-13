@@ -13,22 +13,29 @@ public class LevelManager : NetworkBehaviour
 
     public ProjectSceneManager projectSceneManager;
 
+    public static PlayerController[] players;
+
     private void Start()
     {
         projectSceneManager = GetComponent<ProjectSceneManager>();
+    }
 
-        if (IsServer)
+    private void Update()
+    {
+        players = GameObject.FindObjectsOfType<PlayerController>();
+
+        for(int i = 0; i < players.Length; i++)
         {
-            //updateHealthServerRpc(networkMaxHealth.Value);
-            //updateGoosServerRpc(networkGoos.Value);
+            players[i].transform.parent = GameObject.Find("Vehicle").transform;
         }
+
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void updateGoosServerRpc(int value)
     {
         networkGoos.Value += value;
-        GoosText.GetComponent<GoosUpdate>().updateGoosTextClientRpc(networkGoos.Value);
+        //GoosText.GetComponent<GoosUpdate>().updateGoosTextClientRpc(networkGoos.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]

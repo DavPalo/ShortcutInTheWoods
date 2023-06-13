@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -33,11 +34,13 @@ public class PlayerController : NetworkBehaviour
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleController>();
+
+
+
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         shieldInteract = GameObject.Find("Shield Interact");
         shield = GameObject.Find("Shield");
-        transform.parent = vehicle.transform;
 
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
@@ -52,7 +55,6 @@ public class PlayerController : NetworkBehaviour
         {
             rb2d.simulated = true;
             isDriving = false;
-            GetComponent<Collider2D>().enabled = true;
             vehicle.changeSomeoneIsDrivingServerRpc(false);
             RemoveVehicleOwnerServerRpc();
         }
@@ -107,7 +109,6 @@ public class PlayerController : NetworkBehaviour
             {
                 wheel.GetComponent<Wheel>().player = this;
                 rb2d.simulated = false;
-                GetComponent<Collider2D>().enabled = false;
                 isDriving = true;
                 vehicle.changeSomeoneIsDrivingServerRpc(true);
                 ChangeVehicleOwnerServerRpc(OwnerClientId);

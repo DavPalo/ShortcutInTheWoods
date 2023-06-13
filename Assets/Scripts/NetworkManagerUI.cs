@@ -14,6 +14,8 @@ public class NetworkManagerUI : MonoBehaviour
 
     [SerializeField] private LevelManager levelManager;
 
+    
+
     private void Awake()
     {
         clientBtn.onClick.AddListener(() =>
@@ -30,4 +32,6 @@ public class NetworkManagerUI : MonoBehaviour
             transform.parent.gameObject.SetActive(false);
         });
     }
+
+    
 }
