@@ -35,7 +35,7 @@ public class PlayerController : NetworkBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.Find("Vehicle").GetComponent<VehicleController>();
 
-
+        transform.parent = vehicle.transform;
 
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");

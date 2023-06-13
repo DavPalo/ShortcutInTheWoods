@@ -9,7 +9,7 @@ public class WeaponController : NetworkBehaviour
 {
     Camera mainCamera;
     public float rotationSpeed;
-    public float baseRotation;
+    public Quaternion baseRotation;
 
     public bool someoneIsShooting;
     public Transform vehicle;
@@ -27,7 +27,7 @@ public class WeaponController : NetworkBehaviour
         someoneIsShooting = false;
         canShoot = true;
         vehicle = transform.parent;
-        baseRotation = transform.localRotation.eulerAngles.z;
+        baseRotation = transform.localRotation;
     }
 
     private void Update()
@@ -41,6 +41,13 @@ public class WeaponController : NetworkBehaviour
                 Shoot();
             }
         }
+    }
+
+    public void Move(float currentForwardDirection, float currentSpeed, Vector2 movementVector, float vehicleRotationSpeed)
+    {
+        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+        rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
+        rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * vehicleRotationSpeed * Time.fixedDeltaTime));
     }
 
     public void Aim()
@@ -92,6 +99,11 @@ public class WeaponController : NetworkBehaviour
     public void changeSomeoneIsShootingServerRpc(bool boolean)
     {
         someoneIsShooting = boolean;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, baseRotation, rotationSpeed * Time.deltaTime);
     }
 }
 

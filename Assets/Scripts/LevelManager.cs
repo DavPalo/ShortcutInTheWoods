@@ -22,12 +22,16 @@ public class LevelManager : NetworkBehaviour
 
     private void Update()
     {
-        players = GameObject.FindObjectsOfType<PlayerController>();
+        /*players = GameObject.FindObjectsOfType<PlayerController>();
 
-        for(int i = 0; i < players.Length; i++)
+        if(players.Length > 1)
         {
-            players[i].transform.parent = GameObject.Find("Vehicle").transform;
-        }
+            for(int i = 0; i < players.Length; i++)
+            {
+                players[i].transform.parent = GameObject.Find("Vehicle").transform;
+            }
+
+        }*/
 
     }
 

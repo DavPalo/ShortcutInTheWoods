@@ -67,6 +67,11 @@ public class VehicleController : NetworkBehaviour
 
     public void Move()
     {
+        GameObject[] weapons = GameObject.FindGameObjectsWithTag("Weapon");
+        foreach (GameObject weapon in weapons)
+        {
+            weapon.GetComponent<WeaponController>().Move(currentForwardDirection, currentSpeed, movementVector, rotationSpeed);
+        }
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
 
         if (someoneIsDriving.Value)

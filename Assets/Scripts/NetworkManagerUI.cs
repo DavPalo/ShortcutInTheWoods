@@ -10,9 +10,9 @@ public class NetworkManagerUI : MonoBehaviour
 {
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
-    [SerializeField] private TMP_InputField inputField;
 
     [SerializeField] private LevelManager levelManager;
+    [SerializeField] private GameObject vehiclePrefab;
 
     
 
@@ -22,6 +22,7 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Client");
             NetworkManager.Singleton.StartClient();
+            
             transform.parent.gameObject.SetActive(false);
         });
 

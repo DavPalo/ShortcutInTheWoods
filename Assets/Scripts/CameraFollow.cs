@@ -11,6 +11,8 @@ public class CameraFollow : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
+        vehicle = GameObject.Find("Vehicle").transform;
+        if(vehicle != null)
+            transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
     }
 }
