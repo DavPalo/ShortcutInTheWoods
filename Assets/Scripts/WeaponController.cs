@@ -21,6 +21,8 @@ public class WeaponController : NetworkBehaviour
     public float shootDelay;
     public int bulletDamage;
 
+    public bool stop = false; 
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -60,7 +62,11 @@ public class WeaponController : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void AimServerRpc(float angle, float rotationStep)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
+        if (stop)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, baseRotation, rotationStep);
+        else
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
+
     }
 
     public void Shoot()
@@ -93,10 +99,15 @@ public class WeaponController : NetworkBehaviour
     {
         someoneIsShooting = boolean;
     }
-
-    private void OnCollisionStay2D(Collision2D collision)
+  
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, baseRotation, rotationSpeed * Time.deltaTime);
+        stop = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        stop = false;
     }
 }
 

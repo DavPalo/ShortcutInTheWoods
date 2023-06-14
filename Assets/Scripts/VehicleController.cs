@@ -29,17 +29,18 @@ public class VehicleController : NetworkBehaviour
 
     private void Update()
     {
-        if(driver && driver.IsOwner)
+        if (driver && driver.IsOwner)
         {
             Drive();
         }
+        else
+            DriveServerRpc(0, 0, new Vector2(), 0);
     }
 
     public void Drive()
     {
         if (someoneIsDriving.Value)
         {
-            Debug.Log("Dentro drive");
             movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             movementVector.Normalize();
 
@@ -55,32 +56,29 @@ public class VehicleController : NetworkBehaviour
             if (Mathf.Abs(movementVector.y) != 0)
                 currentSpeed += acceleration * Time.deltaTime;
             else
-                currentSpeed -= 2 * acceleration * Time.deltaTime;
+                currentSpeed = 0;
         }
         else
         {
-            currentSpeed -= 2 * acceleration * Time.deltaTime;
+            currentSpeed = 0;
         }
 
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 
-        Debug.Log("Pre Server");
-
         DriveServerRpc(currentForwardDirection, currentSpeed, movementVector, rotationSpeed);
 
-        Debug.Log("Post Server");
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void DriveServerRpc(float currentForwardDirection, float currentSpeed, Vector2 movementVector, float rotationSpeed)
     {
-        Debug.Log("Dentro Server");
-
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
-
-        Debug.Log(rb2d.velocity.magnitude);
-
         rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject player in players) {
+            player.transform.rotation = Quaternion.identity;
+        }
 
     }
 
