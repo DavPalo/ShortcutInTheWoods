@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class CameraFollow : NetworkBehaviour
+public class CameraFollow : MonoBehaviour
 {
-    public Transform vehicle;
     public float cameraDistance;
+    private Transform vehicle;
+
+    private void Start()
+    {
+        vehicle = GameObject.FindGameObjectWithTag("Vehicle").transform;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        vehicle = GameObject.Find("Vehicle").transform;
-        if(vehicle != null)
-            transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
+        transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
     }
 }

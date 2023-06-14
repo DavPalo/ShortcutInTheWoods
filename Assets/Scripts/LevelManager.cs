@@ -13,7 +13,8 @@ public class LevelManager : NetworkBehaviour
 
     public ProjectSceneManager projectSceneManager;
 
-    public static PlayerController[] players;
+    public GameObject vehiclePrefab;
+    public GameObject[] weaponPrefabs;
 
     private void Start()
     {
@@ -22,17 +23,14 @@ public class LevelManager : NetworkBehaviour
 
     private void Update()
     {
-        /*players = GameObject.FindObjectsOfType<PlayerController>();
+        /*
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        if(players.Length > 1)
+        foreach (GameObject player in players)
         {
-            for(int i = 0; i < players.Length; i++)
-            {
-                players[i].transform.parent = GameObject.Find("Vehicle").transform;
-            }
-
-        }*/
-
+            transform.localScale = new Vector3(0.1f, 0.1f, 0f);
+        }
+        */
     }
 
     [ServerRpc(RequireOwnership = false)]

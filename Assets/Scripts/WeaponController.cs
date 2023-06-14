@@ -43,13 +43,6 @@ public class WeaponController : NetworkBehaviour
         }
     }
 
-    public void Move(float currentForwardDirection, float currentSpeed, Vector2 movementVector, float vehicleRotationSpeed)
-    {
-        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
-        rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
-        rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * vehicleRotationSpeed * Time.fixedDeltaTime));
-    }
-
     public void Aim()
     {
         var mouseScreenPos = Input.mousePosition;

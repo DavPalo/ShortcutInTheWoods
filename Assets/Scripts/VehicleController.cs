@@ -27,19 +27,14 @@ public class VehicleController : NetworkBehaviour
 
     private void Update()
     {
-        if(IsOwner)
-            Drive();
-    }
-
-    private void FixedUpdate()
-    {
-        Move();
+        Drive();
     }
 
     public void Drive()
     {
         if (someoneIsDriving.Value)
         {
+            Debug.Log("Dentro drive");
             movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             movementVector.Normalize();
 
@@ -63,19 +58,25 @@ public class VehicleController : NetworkBehaviour
         }
 
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+
+        Debug.Log("Pre Server");
+
+        DriveServerRpc();
+
+        Debug.Log("Post Server");
     }
 
-    public void Move()
+    [ServerRpc(RequireOwnership = false)]
+    public void DriveServerRpc()
     {
-        GameObject[] weapons = GameObject.FindGameObjectsWithTag("Weapon");
-        foreach (GameObject weapon in weapons)
-        {
-            weapon.GetComponent<WeaponController>().Move(currentForwardDirection, currentSpeed, movementVector, rotationSpeed);
-        }
-        rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
-
+        Debug.Log("Dentro Server");
         if (someoneIsDriving.Value)
+        {
+            rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
+
             rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]

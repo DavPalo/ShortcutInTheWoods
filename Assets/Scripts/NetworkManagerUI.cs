@@ -12,9 +12,9 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button hostBtn;
 
     [SerializeField] private LevelManager levelManager;
-    [SerializeField] private GameObject vehiclePrefab;
+    //[SerializeField] private GameObject vehiclePrefab;
+    //public GameObject[] weaponPrefabs;
 
-    
 
     private void Awake()
     {
@@ -22,7 +22,6 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Client");
             NetworkManager.Singleton.StartClient();
-            
             transform.parent.gameObject.SetActive(false);
         });
 
@@ -30,6 +29,20 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
+
+            /*
+            GameObject vehicle = Instantiate(vehiclePrefab);
+            vehicle.GetComponent<NetworkObject>().Spawn();
+            vehicle.name = "Vehicle";
+            
+            foreach (GameObject weaponPrefab in weaponPrefabs)
+            {
+                GameObject weapon = Instantiate(weaponPrefab);
+                weapon.GetComponent<NetworkObject>().Spawn();
+                weapon.transform.parent = vehicle.transform;
+            }
+            */
+
             transform.parent.gameObject.SetActive(false);
         });
     }

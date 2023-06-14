@@ -251,7 +251,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   isDriving: 0
   interact: {fileID: 0}
-  distanceToInteract: 0.5
+  distanceToInteract: 0.7
   shop: 0
   levelManager: {fileID: 0}
 --- !u!114 &-3395308931566767939
