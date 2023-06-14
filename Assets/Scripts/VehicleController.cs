@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class VehicleController : NetworkBehaviour
 {
@@ -16,6 +17,7 @@ public class VehicleController : NetworkBehaviour
     public float currentForwardDirection;
 
     public NetworkVariable<bool> someoneIsDriving;
+    public NetworkObject driver;
 
 
     // Start is called before the first frame update
@@ -27,7 +29,10 @@ public class VehicleController : NetworkBehaviour
 
     private void Update()
     {
-        Drive();
+        if(driver && driver.IsOwner)
+        {
+            Drive();
+        }
     }
 
     public void Drive()
@@ -61,26 +66,36 @@ public class VehicleController : NetworkBehaviour
 
         Debug.Log("Pre Server");
 
-        DriveServerRpc();
+        DriveServerRpc(currentForwardDirection, currentSpeed, movementVector, rotationSpeed);
 
         Debug.Log("Post Server");
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void DriveServerRpc()
+    public void DriveServerRpc(float currentForwardDirection, float currentSpeed, Vector2 movementVector, float rotationSpeed)
     {
         Debug.Log("Dentro Server");
-        if (someoneIsDriving.Value)
+
+        rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
+
+        Debug.Log(rb2d.velocity.magnitude);
+
+        rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void changeSomeoneIsDrivingServerRpc(bool boolean, NetworkObjectReference networkDriver)
+    {
+        someoneIsDriving.Value = boolean;
+        if (networkDriver.TryGet(out NetworkObject driver))
         {
-            rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
-
-            rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
-
+            this.driver = driver;
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void changeSomeoneIsDrivingServerRpc(bool boolean)
+    public void changeServerRpc(bool boolean)
     {
         someoneIsDriving.Value = boolean;
     }

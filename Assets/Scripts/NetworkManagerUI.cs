@@ -30,19 +30,6 @@ public class NetworkManagerUI : MonoBehaviour
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
 
-            /*
-            GameObject vehicle = Instantiate(vehiclePrefab);
-            vehicle.GetComponent<NetworkObject>().Spawn();
-            vehicle.name = "Vehicle";
-            
-            foreach (GameObject weaponPrefab in weaponPrefabs)
-            {
-                GameObject weapon = Instantiate(weaponPrefab);
-                weapon.GetComponent<NetworkObject>().Spawn();
-                weapon.transform.parent = vehicle.transform;
-            }
-            */
-
             transform.parent.gameObject.SetActive(false);
         });
     }

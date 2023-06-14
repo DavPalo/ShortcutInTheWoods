@@ -37,6 +37,8 @@ public class PlayerController : NetworkBehaviour
 
         //transform.parent = vehicle.transform;
 
+        NetworkObject.TrySetParent(vehicle.transform);
+
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         shieldInteract = GameObject.Find("Shield Interact");
@@ -55,7 +57,9 @@ public class PlayerController : NetworkBehaviour
         {
             rb2d.simulated = true;
             isDriving = false;
-            vehicle.changeSomeoneIsDrivingServerRpc(false);
+            vehicle.changeServerRpc(false);
+            //vehicle.changeSomeoneIsDrivingServerRpc(false, NetworkObject);
+            vehicle.driver = null;
         }
         else if (Input.GetKeyDown(KeyCode.Space) && isShooting)
         {
@@ -109,8 +113,9 @@ public class PlayerController : NetworkBehaviour
                 wheel.GetComponent<Wheel>().player = this;
                 rb2d.simulated = false;
                 isDriving = true;
-                vehicle.changeSomeoneIsDrivingServerRpc(true);
-                
+                vehicle.changeServerRpc(true);
+                //vehicle.changeSomeoneIsDrivingServerRpc(true, NetworkObject);
+                vehicle.driver = NetworkObject;
             }
         }
         else if(minimumWeaponDistance < distanceToInteract && !isShooting && !weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting)
@@ -137,22 +142,6 @@ public class PlayerController : NetworkBehaviour
         {
             interact.SetActive(false);
         }
-    }
-
-
-
-
-
-    [ServerRpc(RequireOwnership = false)]
-    public void ChangeVehicleOwnerServerRpc(ulong playerId)
-    {
-        vehicle.GetComponent<NetworkObject>().ChangeOwnership(playerId);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void RemoveVehicleOwnerServerRpc()
-    {
-        vehicle.GetComponent<NetworkObject>().RemoveOwnership();
     }
 
 }
