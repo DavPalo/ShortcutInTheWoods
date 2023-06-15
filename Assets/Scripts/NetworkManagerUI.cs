@@ -29,7 +29,6 @@ public class NetworkManagerUI : MonoBehaviour
         {
             Debug.Log("Host");
             NetworkManager.Singleton.StartHost();
-
             transform.parent.gameObject.SetActive(false);
         });
     }

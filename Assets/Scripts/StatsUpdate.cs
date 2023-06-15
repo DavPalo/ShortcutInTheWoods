@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class StatsUpdate : NetworkBehaviour
 {
-    [SerializeField] TextMeshProUGUI health;
+    [SerializeField] Text health;
+    [SerializeField] Text damage;
     public LevelManager levelManager;
-    private string toShow = "";
+    private string toShowH = "";
+    private string toShowDmg = "";
 
     private void Start()
     {
@@ -16,7 +18,12 @@ public class StatsUpdate : NetworkBehaviour
 
     private void Update()
     {
-        toShow = levelManager.networkHealth.Value.ToString() + " / " + levelManager.networkMaxHealth.Value.ToString();
-        health.text = toShow;
+        toShowH = levelManager.networkHealth.Value.ToString() + " / " + levelManager.networkMaxHealth.Value.ToString();
+        if(health)
+            health.text = toShowH;
+
+        toShowDmg = levelManager.damage.Value.ToString();
+        if(damage)
+            damage.text = toShowDmg;
     }
 }

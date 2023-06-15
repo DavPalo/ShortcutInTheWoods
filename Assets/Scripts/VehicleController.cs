@@ -33,8 +33,10 @@ public class VehicleController : NetworkBehaviour
         {
             Drive();
         }
-        else
+        else if (!someoneIsDriving.Value) {
             DriveServerRpc(0, 0, new Vector2(), 0);
+        }
+ 
     }
 
     public void Drive()
@@ -66,14 +68,25 @@ public class VehicleController : NetworkBehaviour
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 
         DriveServerRpc(currentForwardDirection, currentSpeed, movementVector, rotationSpeed);
-
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void DriveServerRpc(float currentForwardDirection, float currentSpeed, Vector2 movementVector, float rotationSpeed)
     {
+
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
         rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (player.GetComponent<NetworkObject>().NetworkObjectId == 1)
+            {
+                player.GetComponent<Rigidbody2D>().velocity = (Vector2)transform.right * currentForwardDirection *
+                        currentSpeed * Time.fixedDeltaTime + player.GetComponent<PlayerController>().velocity;
+                player.GetComponent<Rigidbody2D>().MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
+            }
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -33,6 +33,7 @@ public class PlayerController : NetworkBehaviour
     public bool shop;
     public LevelManager levelManager;
 
+    public Vector2 velocity;
 
     void Start()
     {
@@ -42,7 +43,8 @@ public class PlayerController : NetworkBehaviour
 
         //transform.parent = vehicle.transform;
 
-        NetworkObject.TrySetParent(vehicle.transform);
+        NetworkObject.TrySetParent(vehicle.gameObject, false);
+        GetComponent<NetworkObject>().AutoObjectParentSync = true;
 
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
@@ -67,7 +69,6 @@ public class PlayerController : NetworkBehaviour
             rb2d.simulated = true;
             isDriving = false;
             vehicle.changeServerRpc(false);
-            //vehicle.changeSomeoneIsDrivingServerRpc(false, NetworkObject);
             vehicle.driver = null;
         }
         else if (Input.GetKeyDown(KeyCode.Space) && isShooting)
@@ -99,7 +100,8 @@ public class PlayerController : NetworkBehaviour
                 vertical *= moveLimiter;
             }
 
-            rb2d.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+            velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+            rb2d.velocity = velocity;
         }
 
         Interact();

@@ -6,6 +6,7 @@ public class LevelManager : NetworkBehaviour
     public NetworkVariable<int> networkHealth;
     public NetworkVariable<int> networkGoos;
     public NetworkVariable<int> networkMaxHealth;
+    public NetworkVariable<int> damage;
 
     public GameObject GoosText;
     public GameObject HealthBar;

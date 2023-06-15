@@ -21,7 +21,9 @@ public class WeaponController : NetworkBehaviour
     public float shootDelay;
     public int bulletDamage;
 
-    public bool stop = false; 
+    public bool stop = false;
+
+    public LevelManager levelManager;
 
     private void Start()
     {
@@ -30,6 +32,8 @@ public class WeaponController : NetworkBehaviour
         canShoot = true;
         vehicle = transform.parent;
         baseRotation = transform.localRotation;
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
     }
 
     private void Update()
@@ -81,7 +85,7 @@ public class WeaponController : NetworkBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         //bullet.GetComponent<Bullet>().shooter = gameObject;
-        bullet.GetComponent<Bullet>().damage = bulletDamage;
+        bullet.GetComponent<Bullet>().damage = levelManager.damage.Value;
         bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);

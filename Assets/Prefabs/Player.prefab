@@ -205,7 +205,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -231,6 +231,7 @@ MonoBehaviour:
   weaponIndex: 0
   shieldInteract: {fileID: 0}
   shield: {fileID: 0}
+  binoculars: {fileID: 0}
   isDriving: 0
   interact: {fileID: 0}
   distanceToInteract: 0.7
