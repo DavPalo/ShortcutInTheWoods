@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -20,14 +20,19 @@ public class PlayerController : NetworkBehaviour
     public int weaponIndex;
     public GameObject shieldInteract;
     public GameObject shield;
+    public GameObject binoculars;
+
+    bool binocularsActive = false;
 
     public bool isDriving = false;
     private bool isShooting = false;
+    private bool isLooking = false;
     public GameObject interact;
     public float distanceToInteract;
 
     public bool shop;
     public LevelManager levelManager;
+
 
     void Start()
     {
@@ -42,6 +47,7 @@ public class PlayerController : NetworkBehaviour
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
         shieldInteract = GameObject.Find("Shield Interact");
+        binoculars = GameObject.Find("Binoculars");
         shield = GameObject.Find("Shield");
 
         interact = this.gameObject.transform.GetChild(0).gameObject;
@@ -52,6 +58,9 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
             return;
+
+        gameObject.transform.rotation = Quaternion.identity;
+        gameObject.transform.localScale = new Vector3(0.1f,.1f,.1f);
 
         if (Input.GetKeyDown(KeyCode.Space) && isDriving)
         {
@@ -68,6 +77,13 @@ public class PlayerController : NetworkBehaviour
             isShooting = false;
             weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting = false;
         }
+        /*else if (Input.GetKeyDown(KeyCode.Space) && isLooking)
+        {
+            rb2d.bodyType = RigidbodyType2D.Dynamic;
+            rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+            GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -8f;
+            isLooking = false;
+        }*/
 
         // Gives a value between -1 and 1
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
@@ -87,7 +103,6 @@ public class PlayerController : NetworkBehaviour
         }
 
         Interact();
-
     }
 
     private void Interact()
@@ -104,6 +119,7 @@ public class PlayerController : NetworkBehaviour
         weaponIndex = Array.IndexOf(distanceToWeapons, minimumWeaponDistance);
 
         float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
+        float distanceToBinoculars = (transform.position - binoculars.transform.position).magnitude;
 
         if (distanceToWheel < distanceToInteract && isDriving == false && !vehicle.someoneIsDriving.Value)
         {
@@ -114,7 +130,6 @@ public class PlayerController : NetworkBehaviour
                 rb2d.simulated = false;
                 isDriving = true;
                 vehicle.changeServerRpc(true);
-                //vehicle.changeSomeoneIsDrivingServerRpc(true, NetworkObject);
                 vehicle.driver = NetworkObject;
             }
         }
@@ -138,12 +153,22 @@ public class PlayerController : NetworkBehaviour
                 shield.GetComponent<Shield>().activateShieldServerRpc();
             }
         }
+        /*else if (distanceToBinoculars < distanceToInteract)
+        {
+            interact.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                rb2d.bodyType = RigidbodyType2D.Kinematic;
+                rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
+                isLooking = true;
+                GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -15f;
+            }
+        }*/
         else
         {
             interact.SetActive(false);
         }
     }
-
 }
 
 

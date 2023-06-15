@@ -74,12 +74,6 @@ public class VehicleController : NetworkBehaviour
     {
         rb2d.velocity = (Vector2)transform.right * currentForwardDirection * currentSpeed * Time.fixedDeltaTime;
         rb2d.MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject player in players) {
-            player.transform.rotation = Quaternion.identity;
-        }
-
     }
 
     [ServerRpc(RequireOwnership = false)]
