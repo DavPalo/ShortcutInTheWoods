@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -21,8 +22,6 @@ public class PlayerController : NetworkBehaviour
     public GameObject shieldInteract;
     public GameObject shield;
     public GameObject binoculars;
-
-    bool binocularsActive = false;
 
     public bool isDriving = false;
     private bool isShooting = false;
@@ -112,7 +111,7 @@ public class PlayerController : NetworkBehaviour
         float distanceToWheel = (transform.position - wheel.transform.position).magnitude;
 
         float[] distanceToWeapons = new float[4];
-        for(int i = 0; i < weapons.Length; i++)
+        for (int i = 0; i < weapons.Length; i++)
         {
             distanceToWeapons[i] = (transform.position - weapons[i].transform.position).magnitude;
         }
@@ -127,6 +126,8 @@ public class PlayerController : NetworkBehaviour
         if (distanceToWheel < distanceToInteract && isDriving == false && !vehicle.someoneIsDriving.Value)
         {
             interact.SetActive(true);
+            interact.GetComponentInChildren<Text>().text = "E to Drive";
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 wheel.GetComponent<Wheel>().player = this;
@@ -135,10 +136,15 @@ public class PlayerController : NetworkBehaviour
                 vehicle.changeServerRpc(true);
                 vehicle.driver = NetworkObject;
             }
+        } else if (isDriving == true)
+        {
+            interact.SetActive(true);
+            interact.GetComponentInChildren<Text>().text = "Q to Shop";
         }
         else if(minimumWeaponDistance < distanceToInteract && !isShooting && !weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting)
         {
             interact.SetActive(true);
+            interact.GetComponentInChildren<Text>().text = "E to Shoot";
             if (Input.GetKeyDown(KeyCode.E))
             {
                 rb2d.bodyType = RigidbodyType2D.Kinematic;
@@ -151,6 +157,8 @@ public class PlayerController : NetworkBehaviour
         else if (distanceToShield < distanceToInteract)
         {
             interact.SetActive(true);
+            interact.GetComponentInChildren<Text>().text = "E to Shield";
+
             if (Input.GetKeyDown(KeyCode.E) && shield.GetComponent<Shield>().activable)
             {
                 shield.GetComponent<Shield>().activateShieldServerRpc();
@@ -159,6 +167,8 @@ public class PlayerController : NetworkBehaviour
         else if (distanceToBinoculars < distanceToInteract)
         {
             interact.SetActive(true);
+            interact.GetComponentInChildren<Text>().text = "E to Look";
+
             if (Input.GetKeyDown(KeyCode.E))
             {
                 rb2d.bodyType = RigidbodyType2D.Kinematic;
