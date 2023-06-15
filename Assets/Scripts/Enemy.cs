@@ -91,7 +91,6 @@ public class Enemy : NetworkBehaviour
 
     public void Shoot()
     {
-        Debug.Log((vehicle.transform.position - transform.position).magnitude);
         if((vehicle.transform.position - transform.position).magnitude < distanceToEngage)
         {
             GameObject bullet = Instantiate(this.bullet, transform.position, transform.rotation);

@@ -67,10 +67,9 @@ public class WeaponController : NetworkBehaviour
     public void AimServerRpc(float angle, float rotationStep)
     {
         if (stop)
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, baseRotation, rotationStep);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, baseRotation * vehicle.transform.rotation, rotationStep);
         else
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
-
     }
 
     public void Shoot()
@@ -106,12 +105,14 @@ public class WeaponController : NetworkBehaviour
   
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        stop = true;
+        if(collision.collider.gameObject.tag == "Vehicle")
+            stop = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        stop = false;
+        if (collision.collider.gameObject.tag == "Vehicle")
+            stop = false;
     }
 }
 

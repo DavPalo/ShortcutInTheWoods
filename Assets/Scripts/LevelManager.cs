@@ -35,7 +35,6 @@ public class LevelManager : NetworkBehaviour
     public void updateGoosServerRpc(int value)
     {
         networkGoos.Value += value;
-        //GoosText.GetComponent<GoosUpdate>().updateGoosTextClientRpc(networkGoos.Value);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -61,5 +60,11 @@ public class LevelManager : NetworkBehaviour
         networkHealth.Value = networkMaxHealth.Value;
 
         HealthBar.GetComponent<HealthBar>().SetMaxHealthClientRpc(networkHealth.Value);
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void increaseDmgServerRpc(int value)
+    {
+        damage.Value += value;
     }
 }

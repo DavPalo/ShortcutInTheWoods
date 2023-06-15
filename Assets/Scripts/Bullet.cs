@@ -17,11 +17,18 @@ public class Bullet : NetworkBehaviour
             Collider2D shooterCollider = shooter.GetComponent<Collider2D>();
             Physics2D.IgnoreCollision(coll, shooterCollider, true);
         }
-        
+    }
+
+    private void Update()
+    {
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+        foreach (GameObject bullet in bullets) {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), bullet.GetComponent<Collider2D>(), true);
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DestroyClientRpc();
+            DestroyClientRpc();
     }
 
     [ClientRpc]
