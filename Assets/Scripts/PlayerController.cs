@@ -77,20 +77,20 @@ public class PlayerController : NetworkBehaviour
             isShooting = false;
             weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting = false;
         }
-        /*else if (Input.GetKeyDown(KeyCode.Space) && isLooking)
+        else if (Input.GetKeyDown(KeyCode.Space) && isLooking)
         {
             rb2d.bodyType = RigidbodyType2D.Dynamic;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -8f;
             isLooking = false;
-        }*/
+        }
 
         // Gives a value between -1 and 1
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
         vertical = Input.GetAxisRaw("Vertical"); // -1 is down
 
 
-        if (!isDriving && !isShooting)
+        if (!isDriving && !isShooting && !isLooking)
         {
             if (horizontal != 0 && vertical != 0) // Check for diagonal movement
             {
@@ -119,6 +119,7 @@ public class PlayerController : NetworkBehaviour
         weaponIndex = Array.IndexOf(distanceToWeapons, minimumWeaponDistance);
 
         float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
+
         float distanceToBinoculars = (transform.position - binoculars.transform.position).magnitude;
 
         if (distanceToWheel < distanceToInteract && isDriving == false && !vehicle.someoneIsDriving.Value)
@@ -153,7 +154,7 @@ public class PlayerController : NetworkBehaviour
                 shield.GetComponent<Shield>().activateShieldServerRpc();
             }
         }
-        /*else if (distanceToBinoculars < distanceToInteract)
+        else if (distanceToBinoculars < distanceToInteract)
         {
             interact.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
@@ -163,7 +164,7 @@ public class PlayerController : NetworkBehaviour
                 isLooking = true;
                 GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -15f;
             }
-        }*/
+        }
         else
         {
             interact.SetActive(false);
