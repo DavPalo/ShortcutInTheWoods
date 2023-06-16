@@ -7,6 +7,7 @@ public class LevelManager : NetworkBehaviour
     public NetworkVariable<int> networkGoos;
     public NetworkVariable<int> networkMaxHealth;
     public NetworkVariable<int> damage;
+    public NetworkVariable<bool> Key;
 
     public GameObject GoosText;
     public GameObject HealthBar;
@@ -16,19 +17,13 @@ public class LevelManager : NetworkBehaviour
 
     private void Start()
     {
+        Key.Value = false;
         projectSceneManager = GetComponent<ProjectSceneManager>();
     }
 
     private void Update()
     {
         
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-        if(players.Length > 1)
-        {
-            GameObject vehicle = GameObject.FindGameObjectWithTag("Vehicle");
-            vehicle.transform.localScale = new Vector3(5f, 5f, 0f);
-        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -66,5 +61,11 @@ public class LevelManager : NetworkBehaviour
     public void increaseDmgServerRpc(int value)
     {
         damage.Value += value;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void KeyGainedServerRpc()
+    {
+        Key.Value = true;
     }
 }

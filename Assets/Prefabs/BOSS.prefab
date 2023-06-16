@@ -159,7 +159,9 @@ MonoBehaviour:
   health: 1000
   attack: 50
   bulletDamage: 20
-  distanceToEngage: 10
+  speed: 5
+  distanceToEngage: 15
+  minDistance: 5
   bulletForce: 0.2
   canShoot: 0
   delayInSeconds: 2

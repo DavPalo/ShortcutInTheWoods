@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Bullet : NetworkBehaviour
 {
@@ -28,7 +29,7 @@ public class Bullet : NetworkBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-            DestroyClientRpc();
+       DestroyClientRpc();
     }
 
     [ClientRpc]

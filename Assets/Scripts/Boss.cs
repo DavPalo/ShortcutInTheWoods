@@ -12,7 +12,9 @@ public class Boss : NetworkBehaviour
     public int health;
     public int attack;
     public int bulletDamage;
+    public int speed;
     public float distanceToEngage;
+    public float minDistance;
 
     public float bulletForce;
     public bool canShoot;
@@ -56,8 +58,12 @@ public class Boss : NetworkBehaviour
 
     public void Shoot()
     {
-        if ((vehicle.transform.position - transform.position).magnitude < distanceToEngage)
+        if ((vehicle.transform.position - transform.position).magnitude < distanceToEngage && (vehicle.transform.position - transform.position).magnitude > minDistance)
         {
+            Vector2 newPosition = Vector2.MoveTowards(transform.position, vehicle.transform.position, Time.deltaTime * speed);
+            Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.MovePosition(newPosition);
+
             GameObject bullet = Instantiate(this.bullet, firePoint.position, transform.rotation);
             bullet.GetComponent<Bullet>().shooter = gameObject;
             bullet.GetComponent<Bullet>().damage = bulletDamage;

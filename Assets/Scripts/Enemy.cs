@@ -95,6 +95,7 @@ public class Enemy : NetworkBehaviour
         {
             GameObject bullet = Instantiate(this.bullet, transform.position, transform.rotation);
             bullet.GetComponent<Bullet>().shooter = gameObject;
+            bullet.GetComponent<SpriteRenderer>().color = Color.blue;
             bullet.GetComponent<Bullet>().damage = bulletDamage;
             bullet.GetComponent<NetworkObject>().Spawn(true);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();

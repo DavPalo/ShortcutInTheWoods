@@ -81,7 +81,7 @@ public class PlayerController : NetworkBehaviour
         {
             rb2d.bodyType = RigidbodyType2D.Dynamic;
             rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-            GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -8f;
+            GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -12f;
             isLooking = false;
         }
 
@@ -174,7 +174,7 @@ public class PlayerController : NetworkBehaviour
                 rb2d.bodyType = RigidbodyType2D.Kinematic;
                 rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
                 isLooking = true;
-                GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -15f;
+                GameObject.Find("Camera").GetComponent<CameraFollow>().cameraDistance = -20f;
             }
         }
         else
