@@ -9,6 +9,8 @@ public class Treasure : NetworkBehaviour
     public int value;
     public LevelManager levelManager;
 
+    public GameObject message;
+
     private void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -32,6 +34,9 @@ public class Treasure : NetworkBehaviour
     {
         if(health <= 0)
         {
+
+            message.GetComponent<Timer>().txt = "+ "+ value + " goos";
+            message.GetComponent<Timer>().txtChange = true;
             levelManager.updateGoosServerRpc(value);
             if(IsServer)
                 NetworkObject.Despawn();

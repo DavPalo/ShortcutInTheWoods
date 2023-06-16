@@ -9,6 +9,7 @@ public class TresureDmg : NetworkBehaviour
     public int value;
     public LevelManager levelManager;
 
+    public GameObject message;
     private void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -32,6 +33,8 @@ public class TresureDmg : NetworkBehaviour
     {
         if (health <= 0)
         {
+            message.GetComponent<Timer>().txt = "+ " + value + " dmg";
+            message.GetComponent<Timer>().txtChange = true;
             levelManager.increaseDmgServerRpc(value);
             if (IsServer)
                 NetworkObject.Despawn();
