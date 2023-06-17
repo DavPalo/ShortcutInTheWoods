@@ -14,9 +14,13 @@ public class VehicleController : NetworkBehaviour
     public float acceleration;
     public float currentSpeed;
     public float currentForwardDirection;
+    private float horizontal;
+    private float vertical;
 
     public NetworkVariable<bool> someoneIsDriving = new NetworkVariable<bool>(false);
-    public NetworkObject driver;
+    public NetworkVariable<ulong> driverId;
+
+    public GameObject driver;
 
 
     // Start is called before the first frame update
@@ -27,18 +31,28 @@ public class VehicleController : NetworkBehaviour
 
     private void Update()
     {
-        if (driver)
-        {
+        
             Drive();
-        }
+        
  
     }
 
     public void Drive()
     {
-        if (someoneIsDriving.Value && driver.IsOwner)
+        if (someoneIsDriving.Value)
         {
-            movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in players)
+            {
+                if (player.GetComponent<NetworkObject>().NetworkObjectId == driverId.Value) {
+                    driver = player;
+                }
+            }
+
+            horizontal = driver.GetComponent<PlayerController>().horizontal.Value;
+            vertical = driver.GetComponent<PlayerController>().vertical.Value;
+
+            movementVector = new Vector2(horizontal, vertical);
             movementVector.Normalize();
 
             if (movementVector.y > 0)
@@ -81,21 +95,5 @@ public class VehicleController : NetworkBehaviour
                 player.GetComponent<Rigidbody2D>().MoveRotation(transform.rotation * Quaternion.Euler(0, 0, -movementVector.x * rotationSpeed * Time.fixedDeltaTime));
             }
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void changeSomeoneIsDrivingServerRpc(bool boolean, NetworkObjectReference networkDriver)
-    {
-        someoneIsDriving.Value = boolean;
-        if (networkDriver.TryGet(out NetworkObject driver))
-        {
-            this.driver = driver;
-        }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void changeServerRpc(bool boolean)
-    {
-        someoneIsDriving.Value = boolean;
     }
 }

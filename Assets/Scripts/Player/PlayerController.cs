@@ -10,8 +10,8 @@ public class PlayerController : NetworkBehaviour
 {
     private Rigidbody2D rb2d;
 
-    private float horizontal;
-    private float vertical;
+    public NetworkVariable<float> horizontal = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float>  vertical = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private float moveLimiter = 0.7f;
     public float runSpeed;
     public Vector2 velocity;
@@ -64,8 +64,7 @@ public class PlayerController : NetworkBehaviour
         {
             rb2d.simulated = true;
             isDriving = false;
-            vehicle.changeServerRpc(false);
-            //vehicle.driver = null;
+            ChangeServerRpc();
         }
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && isShooting)
         {
@@ -81,20 +80,20 @@ public class PlayerController : NetworkBehaviour
         }
 
         // Gives a value between -1 and 1
-        horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
-        vertical = Input.GetAxisRaw("Vertical"); // -1 is down
+        horizontal.Value = Input.GetAxisRaw("Horizontal"); // -1 is left
+        vertical.Value = Input.GetAxisRaw("Vertical"); // -1 is down
 
 
         if (!isDriving && !isShooting && !isLooking)
         {
-            if (horizontal != 0 && vertical != 0) // Check for diagonal movement
+            if (horizontal.Value != 0 && vertical.Value != 0) // Check for diagonal movement
             {
                 // limit movement speed diagonally, so you move at 70% speed
-                horizontal *= moveLimiter;
-                vertical *= moveLimiter;
+                horizontal.Value *= moveLimiter;
+                vertical.Value *= moveLimiter;
             }
 
-            velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+            velocity = new Vector2(horizontal.Value * runSpeed, vertical.Value * runSpeed);
             rb2d.velocity = velocity;
         }
 
@@ -128,8 +127,7 @@ public class PlayerController : NetworkBehaviour
                 wheel.GetComponent<Wheel>().player = this;
                 rb2d.simulated = false;
                 isDriving = true;
-                vehicle.changeServerRpc(true);
-                vehicle.driver = NetworkObject;
+                ChangeServerRpc();
             }
         } else if (isDriving)
         {
@@ -174,6 +172,13 @@ public class PlayerController : NetworkBehaviour
         {
             interact.SetActive(false);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangeServerRpc() {
+        vehicle.driverId.Value = NetworkObjectId;
+        vehicle.someoneIsDriving.Value = !vehicle.someoneIsDriving.Value;
+
     }
 }
 
