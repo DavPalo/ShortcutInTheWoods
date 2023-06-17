@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class FakeTrees : MonoBehaviour
+public class FakeTrees : NetworkBehaviour
 {
     public int health = 1;
 
@@ -25,7 +25,12 @@ public class FakeTrees : MonoBehaviour
     {
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            SetActiveClientRpc(false);
         }
+    }
+
+    [ClientRpc]
+    private void SetActiveClientRpc(bool ean) {
+        gameObject.SetActive(ean);
     }
 }

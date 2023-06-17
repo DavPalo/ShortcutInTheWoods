@@ -52,6 +52,8 @@ public class VehicleController : NetworkBehaviour
 
             if (Mathf.Abs(movementVector.y) != 0)
                 currentSpeed += acceleration * Time.deltaTime;
+            else
+                currentSpeed -= 2 * acceleration * Time.deltaTime;
         }
         else
             currentSpeed -= 2* acceleration * Time.deltaTime;

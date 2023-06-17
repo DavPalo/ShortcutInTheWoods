@@ -44,7 +44,7 @@ public class Vehicle : NetworkBehaviour
         // Game Over
         if (levelManager.networkHealth.Value <= 0)
         {
-            levelManager.projectSceneManager.ChangeScene();
+          //  levelManager.projectSceneManager.ChangeScene();
         }
     }
 }
