@@ -7,13 +7,15 @@ public class TresureDmg : NetworkBehaviour
 {
     public int health = 10;
     public int value;
+    public int minValue;
+    public int maxValue;
     public LevelManager levelManager;
 
     public GameObject message;
     private void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        value = Random.Range(5, 10);
+        value = Random.Range(minValue, maxValue);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

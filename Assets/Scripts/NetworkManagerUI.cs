@@ -11,11 +11,6 @@ public class NetworkManagerUI : MonoBehaviour
     [SerializeField] private Button clientBtn;
     [SerializeField] private Button hostBtn;
 
-    [SerializeField] private LevelManager levelManager;
-    //[SerializeField] private GameObject vehiclePrefab;
-    //public GameObject[] weaponPrefabs;
-
-
     private void Awake()
     {
         clientBtn.onClick.AddListener(() =>

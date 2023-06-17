@@ -139,10 +139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54971f2c7913989459931b0a43f20287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  attack: 20
+  health: 40
+  attack: 15
   speed: 5
-  distanceToEngage: 5
+  distanceToEngage: 20
 --- !u!114 &4719465867447878047
 MonoBehaviour:
   m_ObjectHideFlags: 0

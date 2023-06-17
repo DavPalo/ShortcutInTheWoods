@@ -9,7 +9,9 @@ public class Shop : MonoBehaviour
     [SerializeField] private Button repairBtn;
     [SerializeField] private Button increaseHealthBtn;
     public int repairCost;
+    public int repairValue;
     public int increaseHealthCost;
+    public int increaseHealthValue;
     LevelManager levelManager;
 
     private void Start()
@@ -32,7 +34,7 @@ public class Shop : MonoBehaviour
     {
         if(levelManager.networkGoos.Value >= repairCost && levelManager.networkHealth.Value < levelManager.networkMaxHealth.Value)
         {
-            levelManager.updateHealthServerRpc(10);
+            levelManager.updateHealthServerRpc(repairValue);
             levelManager.updateGoosServerRpc(-repairCost);
 
         }
@@ -42,7 +44,7 @@ public class Shop : MonoBehaviour
     {
         if (levelManager.networkGoos.Value >= increaseHealthCost)
         {
-            levelManager.increaseHealthServerRpc(10);
+            levelManager.increaseHealthServerRpc(increaseHealthValue);
             levelManager.updateGoosServerRpc(-increaseHealthCost);
 
         }

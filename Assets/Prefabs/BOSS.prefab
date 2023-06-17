@@ -156,9 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
-  health: 1000
-  attack: 10
-  bulletDamage: 10
+  health: 300
+  attack: 30
+  bulletDamage: 4
   speed: 10
   distanceToEngage: 30
   minDistance: 5

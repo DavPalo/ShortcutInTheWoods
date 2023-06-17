@@ -26,6 +26,8 @@ public class PlayerController : NetworkBehaviour
     public bool isDriving = false;
     private bool isShooting = false;
     private bool isLooking = false;
+    public bool isShopping = false;
+
     public GameObject interact;
     public float distanceToInteract;
 
@@ -39,8 +41,6 @@ public class PlayerController : NetworkBehaviour
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.FindGameObjectWithTag("Vehicle").GetComponent<VehicleController>();
-
-        //transform.parent = vehicle.transform;
 
         NetworkObject.TrySetParent(vehicle.gameObject, false);
         GetComponent<NetworkObject>().AutoObjectParentSync = true;
@@ -63,7 +63,7 @@ public class PlayerController : NetworkBehaviour
         gameObject.transform.rotation = Quaternion.identity;
         gameObject.transform.localScale = new Vector3(0.1f,.1f,.1f);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isDriving)
+        if (Input.GetKeyDown(KeyCode.Space) && isDriving &&!isShopping)
         {
             rb2d.simulated = true;
             isDriving = false;

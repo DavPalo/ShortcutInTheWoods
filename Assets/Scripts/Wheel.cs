@@ -16,6 +16,7 @@ public class Wheel : MonoBehaviour
         if (player) {
             if (player.isDriving) {
                 if (Input.GetKeyDown(KeyCode.Q)) {
+                    player.GetComponent<PlayerController>().isShopping = !player.GetComponent<PlayerController>().isShopping;
                     active = !active;
                     shop.gameObject.SetActive(active);
                 }

@@ -7,6 +7,8 @@ public class Treasure : NetworkBehaviour
 {
     public int health;
     public int value;
+    public int minValue;
+    public int maxValue;
     public LevelManager levelManager;
 
     public GameObject message;
@@ -14,7 +16,7 @@ public class Treasure : NetworkBehaviour
     private void Start()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        value = Random.Range(30, 60);
+        value = Random.Range(minValue, maxValue);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

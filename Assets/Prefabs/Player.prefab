@@ -314,7 +314,7 @@ MonoBehaviour:
   binoculars: {fileID: 0}
   isDriving: 0
   interact: {fileID: 0}
-  distanceToInteract: 1
+  distanceToInteract: 0.7
   shop: 0
   levelManager: {fileID: 0}
   velocity: {x: 0, y: 0}
