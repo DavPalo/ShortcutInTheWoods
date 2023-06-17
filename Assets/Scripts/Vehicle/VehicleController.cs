@@ -31,7 +31,7 @@ public class VehicleController : NetworkBehaviour
 
     private void Update()
     {
-        
+        if(driverId.Value != 0)
             Drive();
         
  

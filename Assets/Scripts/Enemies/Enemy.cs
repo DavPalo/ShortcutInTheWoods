@@ -81,17 +81,18 @@ public class Enemy : NetworkBehaviour
     {
         if((vehicle.transform.position - transform.position).magnitude < distanceToEngage)
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-            bullet.GetComponent<Bullet>().shooter = gameObject;
-            bullet.GetComponent<Bullet>().damage = bulletDamage;
-            bullet.GetComponent<NetworkObject>().Spawn(true);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            Vector2 direction = vehicle.transform.position - transform.position;
+            if (IsServer) {
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                bullet.GetComponent<Bullet>().shooter = gameObject;
+                bullet.GetComponent<Bullet>().damage = bulletDamage;
+                bullet.GetComponent<NetworkObject>().Spawn(true);
+                Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+                Vector2 direction = vehicle.transform.position - transform.position;
+                rb.AddForce(direction * bulletForce, ForceMode2D.Impulse);
+                canShoot = false;
+                StartCoroutine(ShootCoroutine());
 
-            rb.AddForce(direction * bulletForce, ForceMode2D.Impulse);
-            canShoot = false;
-            StartCoroutine(ShootCoroutine());
-
+            }
         }
     }
 

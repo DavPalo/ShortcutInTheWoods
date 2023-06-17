@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: -8876823497581201226}
   - component: {fileID: 361021244280858891}
   - component: {fileID: 804018142906223360}
+  - component: {fileID: -6228886687881595075}
   m_Layer: 0
   m_Name: BOSS
   m_TagString: Enemy
@@ -62,7 +63,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3645796185102021991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.35, y: -3.56, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -133,8 +134,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 36.32779
+  m_UseAutoMass: 0
+  m_Mass: 10000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -155,15 +156,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf6ca261e1dcd74b8891c1c4f8d145b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
+  bulletPrefab: {fileID: 5910052462645209348, guid: 0813d76ecff2049b6aef15133ba71e9f, type: 3}
   health: 300
   attack: 30
   bulletDamage: 4
-  speed: 10
+  speed: 15
   distanceToEngage: 30
   minDistance: 5
   bulletForce: 0.2
-  canShoot: 0
   delayInSeconds: 5
   firePoint: {fileID: 7509897869428536856}
 --- !u!114 &3645796185102021990
@@ -246,3 +246,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2191346, y: 1.1919206}
   m_EdgeRadius: 0
+--- !u!114 &-6228886687881595075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645796185102021991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46fb41a6e7ea1f14fbfd9ab7cb365618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneAsset: {fileID: 102900000, guid: 55753960690604b8b85afc32f0baeb55, type: 3}
+  m_SceneName: Victory

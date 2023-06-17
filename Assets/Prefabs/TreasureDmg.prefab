@@ -169,8 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  value: 0
   minValue: 5
-  maxValue: 0
-  levelManager: {fileID: 0}
+  maxValue: 10
   message: {fileID: 0}
