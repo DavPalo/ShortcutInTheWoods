@@ -139,13 +139,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723aeca29b8f129459489fc0666833fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
+  bulletPrefab: {fileID: 5910052462645209348, guid: d1762eeed5ed142418af03432757c431, type: 3}
   health: 25
   attack: 10
   bulletDamage: 2
   distanceToEngage: 15
   bulletForce: 0.5
-  canShoot: 0
   delayInSeconds: 1
   minimumDesiredDistance: 1
   maximumDesiredDistance: 1.5
