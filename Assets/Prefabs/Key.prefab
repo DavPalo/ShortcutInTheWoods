@@ -201,5 +201,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  levelManager: {fileID: 0}
   message: {fileID: 0}
+  sound: {fileID: 8300000, guid: 768817f4cecf24dc2a95789b4b41eb00, type: 3}

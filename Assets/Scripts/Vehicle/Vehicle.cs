@@ -39,6 +39,7 @@ public class Vehicle : NetworkBehaviour
 
     void TakeDamage(int damage)
     {
+        GetComponent<AudioSource>().Play();
         levelManager.UpdateHealthServerRpc(-damage);
 
         // Game Over

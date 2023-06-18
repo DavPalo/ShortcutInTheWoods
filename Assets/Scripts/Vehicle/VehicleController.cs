@@ -44,7 +44,8 @@ public class VehicleController : NetworkBehaviour
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             foreach (GameObject player in players)
             {
-                if (player.GetComponent<NetworkObject>().NetworkObjectId == driverId.Value) {
+                if (player.GetComponent<NetworkObject>().NetworkObjectId == driverId.Value)
+                {
                     driver = player;
                 }
             }
@@ -69,8 +70,10 @@ public class VehicleController : NetworkBehaviour
             else
                 currentSpeed -= 2 * acceleration * Time.deltaTime;
         }
-        else
+        else {
             currentSpeed -= 2* acceleration * Time.deltaTime;
+            movementVector.x = 0;
+        }
 
         currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 

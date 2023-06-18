@@ -10,6 +10,8 @@ public class KeyBoss : NetworkBehaviour
     public int health = 1;
     private LevelManager levelManager;
     public GameObject message;
+    public AudioClip sound;
+
 
     private void Start()
     {
@@ -20,6 +22,10 @@ public class KeyBoss : NetworkBehaviour
     {
         if (health <= 0)
         {
+
+            Camera.main.GetComponent<AudioSource>().clip = sound;
+            Camera.main.GetComponent<AudioSource>().Play();
+
             levelManager.ChangeTxtServerRpc("Boss area Unlocked");
 
             levelManager.KeyGainedServerRpc();

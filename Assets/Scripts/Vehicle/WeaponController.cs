@@ -87,6 +87,7 @@ public class WeaponController : NetworkBehaviour
         bullet.GetComponent<NetworkObject>().Spawn(true);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(firePoint.right * bulletForce, ForceMode2D.Impulse);
+        GetComponent<AudioSource>().Play();
         
     }
 

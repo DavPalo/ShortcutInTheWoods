@@ -98,6 +98,7 @@ public class Enemy : NetworkBehaviour
 
     IEnumerator ShootCoroutine()
     {
+        GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(delayInSeconds);
         canShoot = true;
     }

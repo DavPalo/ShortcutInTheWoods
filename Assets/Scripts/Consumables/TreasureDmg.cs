@@ -11,6 +11,7 @@ public class TreasureDmg : NetworkBehaviour
     private int value;
     private LevelManager levelManager;
     public GameObject message;
+    public AudioClip sound;
 
     private void Start()
     {
@@ -35,7 +36,10 @@ public class TreasureDmg : NetworkBehaviour
     {
         if (health <= 0)
         {
-            levelManager.ChangeTxtServerRpc("+" + value + "dmg");
+
+            Camera.main.GetComponent<AudioSource>().clip = sound;
+            Camera.main.GetComponent<AudioSource>().Play();
+            levelManager.ChangeTxtServerRpc("+ " + value + " damage");
             levelManager.IncreaseDmgServerRpc(value);
 
             if (IsServer)

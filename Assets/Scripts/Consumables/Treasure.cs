@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 
 public class Treasure : NetworkBehaviour
 {
@@ -11,6 +12,7 @@ public class Treasure : NetworkBehaviour
     public int maxValue;
     private LevelManager levelManager;
     public GameObject message;
+    public AudioClip sound;
 
     private void Start()
     {
@@ -35,6 +37,8 @@ public class Treasure : NetworkBehaviour
     {
         if(health <= 0)
         {
+            Camera.main.GetComponent<AudioSource>().clip = sound;
+            Camera.main.GetComponent<AudioSource>().Play();
             levelManager.ChangeTxtServerRpc("+" + value + "gloos");
             levelManager.UpdateGloosServerRpc(value);
 

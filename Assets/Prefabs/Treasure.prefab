@@ -127,11 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  value: 0
   minValue: 20
   maxValue: 50
-  levelManager: {fileID: 0}
   message: {fileID: 0}
+  sound: {fileID: 8300000, guid: 8da4e72501b3e4910b3cc9067be22f02, type: 3}
 --- !u!114 &-3395308931566767939
 MonoBehaviour:
   m_ObjectHideFlags: 0
