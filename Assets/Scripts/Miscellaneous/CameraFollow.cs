@@ -16,7 +16,8 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
+        if (vehicle)
+            transform.position = vehicle.transform.position + new Vector3(0, 0, cameraDistance);
     }
 
     public void ZoomOut() {

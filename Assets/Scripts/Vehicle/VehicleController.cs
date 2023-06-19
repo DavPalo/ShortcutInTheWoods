@@ -50,8 +50,10 @@ public class VehicleController : NetworkBehaviour
                 }
             }
 
-            horizontal = driver.GetComponent<PlayerController>().horizontal.Value;
-            vertical = driver.GetComponent<PlayerController>().vertical.Value;
+            if (driver) {
+                horizontal = driver.GetComponent<PlayerController>().horizontal.Value;
+                vertical = driver.GetComponent<PlayerController>().vertical.Value;
+            }
 
             movementVector = new Vector2(horizontal, vertical);
             movementVector.Normalize();
