@@ -39,7 +39,7 @@ public class Treasure : NetworkBehaviour
         {
             Camera.main.GetComponent<AudioSource>().clip = sound;
             Camera.main.GetComponent<AudioSource>().Play();
-            levelManager.ChangeTxtServerRpc("+" + value + "gloos");
+            levelManager.ChangeTxtServerRpc("+" + value + "  gloos");
             levelManager.UpdateGloosServerRpc(value);
 
             if(IsServer)

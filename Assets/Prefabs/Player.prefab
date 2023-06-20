@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 6665014795827077626}
   - component: {fileID: 8325590494764991812}
   - component: {fileID: 1918167414252986497}
+  - component: {fileID: 8127406640178355559}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -168,7 +169,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    m_Font: {fileID: 12800000, guid: 81a0c0ef92b315840bc70d1bf29ae9e2, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -181,6 +182,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'E '
+--- !u!114 &8127406640178355559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4849781580601228593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.84313726}
+  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &8217159956016725574
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,20 +320,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc3603210dba9d4e800b1ece4ae874b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horizontal:
+    m_InternalValue: 0
+  vertical:
+    m_InternalValue: 0
   runSpeed: 5
-  vehicle: {fileID: 0}
-  wheel: {fileID: 0}
-  weapons: []
-  weaponIndex: 0
-  shieldInteract: {fileID: 0}
-  shield: {fileID: 0}
-  binoculars: {fileID: 0}
-  isDriving: 0
-  interact: {fileID: 0}
-  distanceToInteract: 0.7
-  shop: 0
-  levelManager: {fileID: 0}
   velocity: {x: 0, y: 0}
+  isDriving: 0
+  isShooting: 0
+  isLooking: 0
+  isShopping: 0
+  distanceToInteract: 0.7
 --- !u!114 &-3395308931566767939
 MonoBehaviour:
   m_ObjectHideFlags: 0

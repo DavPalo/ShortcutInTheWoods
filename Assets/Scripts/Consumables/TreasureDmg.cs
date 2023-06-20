@@ -39,7 +39,7 @@ public class TreasureDmg : NetworkBehaviour
 
             Camera.main.GetComponent<AudioSource>().clip = sound;
             Camera.main.GetComponent<AudioSource>().Play();
-            levelManager.ChangeTxtServerRpc("+ " + value + " damage");
+            levelManager.ChangeTxtServerRpc("+" + value + " damage");
             levelManager.IncreaseDmgServerRpc(value);
 
             if (IsServer)
