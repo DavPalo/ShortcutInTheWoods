@@ -14,10 +14,13 @@ public class Enemy2 : NetworkBehaviour
     public float speed;
     public float distanceToEngage;
 
+    public Animator animator;
+
     private void Start()
     {
         vehicle = GameObject.Find("Vehicle");
         rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,6 +34,13 @@ public class Enemy2 : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        if (vehicle.transform.position.x < transform.position.x)
+        {
+            animator.SetBool("Left", true);
+        }
+        else
+            animator.SetBool("Left", false);
+
         //get the distance between the player and enemy (this object)
         float distance = (vehicle.transform.position - transform.position).magnitude;
         Vector2 direction = vehicle.transform.position - transform.position;

@@ -22,12 +22,15 @@ public class Enemy : NetworkBehaviour
     public float maximumDesiredDistance;
     public float speed;
 
+    public Animator animator;
+
     // Start is called before the first frame update
     private void Start()
     {
         vehicle = GameObject.Find("Vehicle");
         rb2d = GetComponent<Rigidbody2D>();
         canShoot = true;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -42,6 +45,13 @@ public class Enemy : NetworkBehaviour
 
             if(canShoot)
                 Shoot();
+
+            if (vehicle.transform.position.x < transform.position.x)
+            {
+                animator.SetBool("Left", true);
+            }
+            else
+                animator.SetBool("Left", false);
         }
     }
 
@@ -55,6 +65,7 @@ public class Enemy : NetworkBehaviour
 
     private void Move()
     {
+
         // MOVEMENT
         float distance = (vehicle.transform.position - transform.position).magnitude;
         Vector2 direction = vehicle.transform.position - transform.position;
