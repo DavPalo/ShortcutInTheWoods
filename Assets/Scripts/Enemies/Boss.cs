@@ -24,12 +24,15 @@ public class Boss : NetworkBehaviour
 
     public Transform firePoint;
 
+    public Animator animator;
+
     private void Start()
     {
         projectSceneManager = GetComponent<ProjectSceneManager>();
         vehicle = GameObject.Find("Vehicle");
         rb2d = GetComponent<Rigidbody2D>();
         canShoot = true;
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -51,12 +54,23 @@ public class Boss : NetworkBehaviour
 
     private void Move()
     {
-        if((vehicle.transform.position - transform.position).magnitude < distanceToEngage
+        if(vehicle.transform.position.x < transform.position.x)
+        {
+            animator.SetBool("Left", true);
+        }
+        else
+            animator.SetBool("Left", false);
+
+        if ((vehicle.transform.position - transform.position).magnitude < distanceToEngage
             && (vehicle.transform.position - transform.position).magnitude > minDistance)
-            {
+        {
             Vector2 newPosition = Vector2.MoveTowards(transform.position, vehicle.transform.position, Time.deltaTime * speed);
             rb2d.MovePosition(newPosition);
-            }
+
+            animator.SetFloat("Speed", 1);
+        }
+        else
+            animator.SetFloat("Speed", 0);
     }
   
 

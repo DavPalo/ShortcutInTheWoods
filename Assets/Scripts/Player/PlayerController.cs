@@ -31,6 +31,8 @@ public class PlayerController : NetworkBehaviour
 
     private GameObject interact;
     public float distanceToInteract;
+
+    public Animator animator;
     
     private LevelManager levelManager;
 
@@ -50,6 +52,8 @@ public class PlayerController : NetworkBehaviour
 
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -86,16 +90,42 @@ public class PlayerController : NetworkBehaviour
 
         if (!isDriving && !isShooting && !isLooking)
         {
+            Debug.Log("HORIZONTAL: " + horizontal.Value + " /// VERTICAL: " +vertical.Value);
+
+            if (horizontal.Value != 0 || vertical.Value != 0)
+            {
+                animator.SetFloat("Speed", 1);
+                if(horizontal.Value < 0)
+                    animator.SetBool("Left", true);
+                else
+                    animator.SetBool("Left", false);
+
+            }
+            else 
+            {
+                animator.SetFloat("Speed", 0);
+
+            }
+
+
+            /*
             if (horizontal.Value != 0 && vertical.Value != 0) // Check for diagonal movement
             {
                 // limit movement speed diagonally, so you move at 70% speed
                 horizontal.Value *= moveLimiter;
                 vertical.Value *= moveLimiter;
+
             }
+            */
 
             velocity = new Vector2(horizontal.Value * runSpeed, vertical.Value * runSpeed);
+
+
             rb2d.velocity = velocity;
         }
+        
+        
+
 
         Interact();
     }
