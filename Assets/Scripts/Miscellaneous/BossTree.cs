@@ -18,8 +18,11 @@ public class BossTree : MonoBehaviour
 
     void Update()
     {
-        if (((transform.position - vehicle.transform.position).magnitude < distanceFromTrees) && !levelManager.key.Value)
-            levelManager.ChangeTxtServerRpc("Boss Area Locked");
+        if (vehicle) {
+            if (((transform.position - vehicle.transform.position).magnitude < distanceFromTrees) && !levelManager.key.Value)
+                levelManager.ChangeTxtServerRpc("Boss Area Locked");
+
+        }
 
         if (levelManager.key.Value) {
             gameObject.SetActive(false);
