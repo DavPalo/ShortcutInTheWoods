@@ -144,7 +144,7 @@ MonoBehaviour:
   health: 40
   attack: 15
   speed: 5
-  distanceToEngage: 20
+  distanceToEngage: 15
   animator: {fileID: 0}
 --- !u!114 &4719465867447878047
 MonoBehaviour:

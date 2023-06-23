@@ -160,13 +160,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 5910052462645209348, guid: 0813d76ecff2049b6aef15133ba71e9f, type: 3}
   health: 600
-  attack: 30
-  bulletDamage: 4
+  attack: 10
+  bulletDamage: 10
   speed: 15
   distanceToEngage: 30
   minDistance: 5
-  bulletForce: 0.2
-  delayInSeconds: 3
+  bulletForce: 0.3
+  delayInSeconds: 2.5
   firePoint: {fileID: 7509897869428536856}
   animator: {fileID: 0}
 --- !u!114 &3645796185102021990

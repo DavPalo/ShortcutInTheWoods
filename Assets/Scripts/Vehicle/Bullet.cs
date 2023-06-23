@@ -29,9 +29,8 @@ public class Bullet : NetworkBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.tag != "Weapon") {
-            if(IsServer)
-                NetworkObject.Despawn();
-        }
+          if(IsServer)
+              NetworkObject.Despawn();
+       
     }
 }

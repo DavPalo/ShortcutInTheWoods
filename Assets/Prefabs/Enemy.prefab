@@ -147,8 +147,8 @@ MonoBehaviour:
   attack: 10
   bulletDamage: 2
   distanceToEngage: 15
-  bulletForce: 0.5
-  delayInSeconds: 1
+  bulletForce: 0.4
+  delayInSeconds: 2
   minimumDesiredDistance: 1
   maximumDesiredDistance: 1.5
   speed: 10
