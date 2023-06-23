@@ -77,26 +77,6 @@ public class PlayerController : NetworkBehaviour
         transform.rotation = Quaternion.identity;
         transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        if ((Input.GetKeyDown(KeyCode.E)) && isDriving && !isShopping)
-        {
-            rb2d.simulated = true;
-            isDriving = false;
-            ChangeServerRpc();
-        }
-
-        else if ((Input.GetKeyDown(KeyCode.E)) && isShooting)
-        {
-            rb2d.simulated = true;
-            isShooting = false;
-            weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting = false;
-        }
-
-        else if ((Input.GetKeyDown(KeyCode.E)) && isLooking)
-        {
-            rb2d.simulated = true;
-            Camera.main.GetComponent<CameraFollow>().ZoomIn();
-            isLooking = false;
-        }
 
         // Gives a value between -1 and 1
         horizontal.Value = Input.GetAxisRaw("Horizontal"); // -1 is left
@@ -120,7 +100,6 @@ public class PlayerController : NetworkBehaviour
             }
 
 
-            /*
             if (horizontal.Value != 0 && vertical.Value != 0) // Check for diagonal movement
             {
                 // limit movement speed diagonally, so you move at 70% speed
@@ -128,8 +107,7 @@ public class PlayerController : NetworkBehaviour
                 vertical.Value *= moveLimiter;
 
             }
-            */
-
+            
             velocity = new Vector2(horizontal.Value * runSpeed, vertical.Value * runSpeed);
 
             rb2d.velocity = velocity;
@@ -154,34 +132,39 @@ public class PlayerController : NetworkBehaviour
         float distanceToShield = (transform.position - shieldInteract.transform.position).magnitude;
 
         float distanceToBinoculars = (transform.position - binoculars.transform.position).magnitude;
+        if (distanceToWheel < distanceToInteract)
+        {
+            if (!isDriving)
+            {
+                interact.SetActive(true);
+                interact.GetComponentInChildren<Text>().text = "E to Drive";
+            }
+            else
+            {
+                interact.SetActive(true);
+                interact.GetComponentInChildren<Text>().text = "Q to Repair";
+            }
 
-        if (distanceToWheel < distanceToInteract && !isDriving && !vehicle.someoneIsDriving.Value)
+            if (Input.GetKeyDown(KeyCode.E) && !isShopping)
+            {
+                isDriving = !isDriving;
+                rb2d.simulated = !rb2d.simulated;
+                wheel.GetComponent<Wheel>().player = this;
+
+                ChangeServerRpc();
+            }
+        }
+        else if (minimumWeaponDistance < distanceToInteract)
         {
             interact.SetActive(true);
             interact.GetComponentInChildren<Text>().text = "E to Drive";
 
-            if (Input.GetKeyDown(KeyCode.E) && !isDriving)
-            {
-                wheel.GetComponent<Wheel>().player = this;
-                rb2d.simulated = false;
-                isDriving = true;
-                ChangeServerRpc();
-            }
-        } else if (isDriving)
-        {
-            interact.SetActive(true);
-            interact.GetComponentInChildren<Text>().text = "Q to Repair";
-        }
-        else if(minimumWeaponDistance < distanceToInteract && !isShooting && !weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting)
-        {
-            interact.SetActive(true);
-            interact.GetComponentInChildren<Text>().text = "E to Shoot";
-
             if (Input.GetKeyDown(KeyCode.E))
             {
-                rb2d.simulated = false;
-                isShooting = true;
-                weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting = true;
+                isShooting = !isShooting;
+                rb2d.simulated = !rb2d.simulated;
+                weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting =
+                    !weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting;
             }
         }
         else if (distanceToShield < distanceToInteract)
@@ -197,17 +180,16 @@ public class PlayerController : NetworkBehaviour
         else if (distanceToBinoculars < distanceToInteract)
         {
             interact.SetActive(true);
-            interact.GetComponentInChildren<Text>().text = "E to Zoom Out";
+            interact.GetComponentInChildren<Text>().text = "E to Zoom In/Out";
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                rb2d.simulated = false;
-                isLooking = true;
+                rb2d.simulated = !rb2d.simulated;
+                isLooking = !isLooking;
                 Camera.main.GetComponent<CameraFollow>().ZoomOut();
             }
         }
-        else
-        {
+        else {
             interact.SetActive(false);
         }
     }

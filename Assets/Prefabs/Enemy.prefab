@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 823317393423551326}
   - component: {fileID: 5130535361973796027}
   - component: {fileID: 6374261598924750747}
+  - component: {fileID: 4131824958456441944}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -151,6 +152,7 @@ MonoBehaviour:
   minimumDesiredDistance: 1
   maximumDesiredDistance: 1.5
   speed: 10
+  animator: {fileID: 0}
 --- !u!114 &4719465867447878047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,3 +323,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4131824958456441944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4719465867447878035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 6374261598924750747}

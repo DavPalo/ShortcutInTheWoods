@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
     public float cameraDistance = -12f;
     public float zoom = 8f;
     private Transform vehicle;
+    bool zoomActivated = false;
 
     private void Start()
     {
@@ -21,11 +22,12 @@ public class CameraFollow : MonoBehaviour
     }
 
     public void ZoomOut() {
-        cameraDistance = cameraDistance - zoom;
-    }
-
-    public void ZoomIn()
-    {
-        cameraDistance = cameraDistance + zoom;
-    }
+        if (zoomActivated){
+            cameraDistance = cameraDistance + zoom;
+        }
+        else {
+            cameraDistance = cameraDistance - zoom;
+        }
+        zoomActivated = !zoomActivated;
+    }  
 }
