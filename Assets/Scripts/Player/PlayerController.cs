@@ -87,6 +87,7 @@ public class PlayerController : NetworkBehaviour
             if (horizontal.Value != 0 || vertical.Value != 0)
             {
                 animator.SetFloat("Speed", 1);
+
                 if(horizontal.Value < 0)
                     animator.SetBool("Left", true);
                 else
@@ -157,7 +158,7 @@ public class PlayerController : NetworkBehaviour
         else if (minimumWeaponDistance < distanceToInteract)
         {
             interact.SetActive(true);
-            interact.GetComponentInChildren<Text>().text = "E to Drive";
+            interact.GetComponentInChildren<Text>().text = "E to Shoot";
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -180,7 +181,7 @@ public class PlayerController : NetworkBehaviour
         else if (distanceToBinoculars < distanceToInteract)
         {
             interact.SetActive(true);
-            interact.GetComponentInChildren<Text>().text = "E to Zoom In/Out";
+            interact.GetComponentInChildren<Text>().text = "E to Zoom";
 
             if (Input.GetKeyDown(KeyCode.E))
             {

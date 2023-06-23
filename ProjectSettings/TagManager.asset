@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Enemy2
   - FakeTrees
+  - stop
   layers:
   - Default
   - TransparentFX

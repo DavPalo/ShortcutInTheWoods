@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
 
 public class WeaponController : NetworkBehaviour
@@ -23,21 +22,19 @@ public class WeaponController : NetworkBehaviour
     public float shootDelay;
     public int bulletDamage;
 
-    Rigidbody2D rigidbody;
-
     private bool stop = false;
 
     private LevelManager levelManager;
 
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         someoneIsShooting = false;
         canShoot = true;
         vehicle = transform.parent;
         baseRotation = transform.localRotation;
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+
 
     }
 
@@ -76,6 +73,7 @@ public class WeaponController : NetworkBehaviour
         }
         else
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle), rotationStep);
+        
     }
 
     public void Shoot()
@@ -113,7 +111,7 @@ public class WeaponController : NetworkBehaviour
   
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.gameObject.tag == "Vehicle")
+        if(collision.collider.gameObject.tag == "Vehicle") 
             stop = true;
     }
 

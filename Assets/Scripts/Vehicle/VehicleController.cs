@@ -64,7 +64,7 @@ public class VehicleController : NetworkBehaviour
             }
             else if (movementVector.y < 0)
             {
-                currentForwardDirection = 0;
+                currentForwardDirection = -1;
             }
 
             if (Mathf.Abs(movementVector.y) != 0)
