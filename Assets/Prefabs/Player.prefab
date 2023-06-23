@@ -359,6 +359,13 @@ MonoBehaviour:
   isLooking: 0
   isShopping: 0
   distanceToInteract: 0.7
+  sprites:
+  - {fileID: 21300000, guid: 2c720fccc202e4f288e69226a0d47f28, type: 3}
+  - {fileID: 21300000, guid: c6ed8d686edff4b1999c52b88ab9f2ef, type: 3}
+  controllers:
+  - {fileID: 9100000, guid: 694bbec7ce311c94c8052cc99fc3859e, type: 2}
+  - {fileID: 9100000, guid: 1dfe0ba32212444688b35db017022f63, type: 2}
+  animator: {fileID: 0}
 --- !u!114 &-3395308931566767939
 MonoBehaviour:
   m_ObjectHideFlags: 0

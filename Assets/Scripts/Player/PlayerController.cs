@@ -32,6 +32,9 @@ public class PlayerController : NetworkBehaviour
     private GameObject interact;
     public float distanceToInteract;
 
+    public Sprite[] sprites;
+    public RuntimeAnimatorController[] controllers;
+
     public Animator animator;
     
     private LevelManager levelManager;
@@ -52,8 +55,18 @@ public class PlayerController : NetworkBehaviour
 
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
-
         animator = GetComponent<Animator>();
+
+        if (NetworkObjectId == 1)
+        {
+            GetComponent<SpriteRenderer>().sprite = sprites[0];
+            GetComponent<Animator>().runtimeAnimatorController = controllers[0];
+        }
+        else {
+            GetComponent<SpriteRenderer>().sprite = sprites[1];
+            GetComponent<Animator>().runtimeAnimatorController = controllers[1];
+        }
+
     }
 
     void Update()
@@ -64,19 +77,21 @@ public class PlayerController : NetworkBehaviour
         transform.rotation = Quaternion.identity;
         transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && isDriving &&!isShopping)
+        if ((Input.GetKeyDown(KeyCode.E)) && isDriving && !isShopping)
         {
             rb2d.simulated = true;
             isDriving = false;
             ChangeServerRpc();
         }
-        else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && isShooting)
+
+        else if ((Input.GetKeyDown(KeyCode.E)) && isShooting)
         {
             rb2d.simulated = true;
             isShooting = false;
             weapons[weaponIndex].GetComponent<WeaponController>().someoneIsShooting = false;
         }
-        else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) && isLooking)
+
+        else if ((Input.GetKeyDown(KeyCode.E)) && isLooking)
         {
             rb2d.simulated = true;
             Camera.main.GetComponent<CameraFollow>().ZoomIn();
@@ -87,11 +102,8 @@ public class PlayerController : NetworkBehaviour
         horizontal.Value = Input.GetAxisRaw("Horizontal"); // -1 is left
         vertical.Value = Input.GetAxisRaw("Vertical"); // -1 is down
 
-
         if (!isDriving && !isShooting && !isLooking)
         {
-            Debug.Log("HORIZONTAL: " + horizontal.Value + " /// VERTICAL: " +vertical.Value);
-
             if (horizontal.Value != 0 || vertical.Value != 0)
             {
                 animator.SetFloat("Speed", 1);
@@ -120,12 +132,8 @@ public class PlayerController : NetworkBehaviour
 
             velocity = new Vector2(horizontal.Value * runSpeed, vertical.Value * runSpeed);
 
-
             rb2d.velocity = velocity;
         }
-        
-        
-
 
         Interact();
     }
