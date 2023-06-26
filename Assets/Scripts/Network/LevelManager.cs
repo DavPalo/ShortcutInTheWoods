@@ -69,4 +69,5 @@ public class LevelManager : NetworkBehaviour
     {
         interaction.Value = txt;
     }
+
 }

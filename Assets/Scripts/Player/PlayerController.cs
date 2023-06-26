@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
 
     public NetworkVariable<float> horizontal = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<float>  vertical = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
     private float moveLimiter = 0.7f;
     public float runSpeed;
     public Vector2 velocity;
@@ -41,6 +42,12 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
+        //HOST GO AWAY
+        if (NetworkObjectId == 1)
+        {
+            transform.position = new Vector3(300, 300, 0);
+        }
+
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         rb2d = GetComponent<Rigidbody2D>();
         vehicle = GameObject.FindGameObjectWithTag("Vehicle").GetComponent<VehicleController>();
@@ -57,14 +64,15 @@ public class PlayerController : NetworkBehaviour
         interact.SetActive(false);
         animator = GetComponent<Animator>();
 
-        if (NetworkObjectId == 1)
+      
+        if (NetworkObjectId % 2 == 0)
         {
-            GetComponent<SpriteRenderer>().sprite = sprites[0];
-            GetComponent<Animator>().runtimeAnimatorController = controllers[0];
-        }
-        else {
             GetComponent<SpriteRenderer>().sprite = sprites[1];
             GetComponent<Animator>().runtimeAnimatorController = controllers[1];
+        }
+        else if (NetworkObjectId % 2 != 0) {
+            GetComponent<SpriteRenderer>().sprite = sprites[0];
+            GetComponent<Animator>().runtimeAnimatorController = controllers[0];
         }
 
     }
@@ -135,24 +143,34 @@ public class PlayerController : NetworkBehaviour
         float distanceToBinoculars = (transform.position - binoculars.transform.position).magnitude;
         if (distanceToWheel < distanceToInteract)
         {
-            if (!isDriving)
+            if (!isDriving && !vehicle.someoneIsDriving.Value)
             {
                 interact.SetActive(true);
                 interact.GetComponentInChildren<Text>().text = "E to Drive";
             }
-            else
+            else if(isDriving)
             {
                 interact.SetActive(true);
                 interact.GetComponentInChildren<Text>().text = "Q to Repair";
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && !isShopping)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                isDriving = !isDriving;
-                rb2d.simulated = !rb2d.simulated;
-                wheel.GetComponent<Wheel>().player = this;
+                if (!isShopping && !vehicle.someoneIsDriving.Value)
+                {
+                    isDriving = !isDriving;
+                    rb2d.simulated = !rb2d.simulated;
+                    wheel.GetComponent<Wheel>().player = this;
 
-                ChangeServerRpc();
+                    ChangeServerRpc();
+                }
+                else if(vehicle.driverId.Value == NetworkObjectId && !isShopping) {
+                    isDriving = !isDriving;
+                    rb2d.simulated = !rb2d.simulated;
+                    wheel.GetComponent<Wheel>().player = this;
+
+                    ChangeServerRpc();
+                }
             }
         }
         else if (minimumWeaponDistance < distanceToInteract)

@@ -7,7 +7,7 @@ using UnityEngine;
 public class Wheel : MonoBehaviour
 {
     public PlayerController player = null;
-    bool active = false;
+    bool activeShop = false;
     public Canvas shop;
 
     // Update is called once per frame
@@ -17,8 +17,8 @@ public class Wheel : MonoBehaviour
             if (player.isDriving) {
                 if (Input.GetKeyDown(KeyCode.Q)) {
                     player.GetComponent<PlayerController>().isShopping = !player.GetComponent<PlayerController>().isShopping;
-                    active = !active;
-                    shop.gameObject.SetActive(active);
+                    activeShop = !activeShop;
+                    shop.gameObject.SetActive(activeShop);
                 }
             }
         }
