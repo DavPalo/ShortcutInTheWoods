@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,7 +37,7 @@ public class PlayerController : NetworkBehaviour
     public Sprite[] sprites;
     public RuntimeAnimatorController[] controllers;
 
-    public Animator animator;
+    private Animator animator;
     
     private LevelManager levelManager;
 
@@ -46,6 +47,19 @@ public class PlayerController : NetworkBehaviour
         if (NetworkObjectId == 1)
         {
             transform.position = new Vector3(300, 300, 0);
+        }
+
+        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        if (NetworkObjectId % 2 == 0)
+        {
+            GetComponent<SpriteRenderer>().sprite = sprites[1];
+            GetComponent<Animator>().runtimeAnimatorController = controllers[1];
+        }
+        else if (NetworkObjectId % 2 != 0)
+        {
+            GetComponent<SpriteRenderer>().sprite = sprites[0];
+            GetComponent<Animator>().runtimeAnimatorController = controllers[0];
         }
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -63,17 +77,7 @@ public class PlayerController : NetworkBehaviour
         interact = this.gameObject.transform.GetChild(0).gameObject;
         interact.SetActive(false);
         animator = GetComponent<Animator>();
-
-      
-        if (NetworkObjectId % 2 == 0)
-        {
-            GetComponent<SpriteRenderer>().sprite = sprites[1];
-            GetComponent<Animator>().runtimeAnimatorController = controllers[1];
-        }
-        else if (NetworkObjectId % 2 != 0) {
-            GetComponent<SpriteRenderer>().sprite = sprites[0];
-            GetComponent<Animator>().runtimeAnimatorController = controllers[0];
-        }
+        //GetComponent<NetworkAnimator>().Animator = animator;
 
     }
 
