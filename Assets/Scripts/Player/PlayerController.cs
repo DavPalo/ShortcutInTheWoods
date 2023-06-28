@@ -46,10 +46,11 @@ public class PlayerController : NetworkBehaviour
         //HOST GO AWAY
         if (NetworkObjectId == 1)
         {
+            interact = this.gameObject.transform.GetChild(0).gameObject;
+            interact.SetActive(false);
             transform.position = new Vector3(300, 300, 0);
+            return;
         }
-
-        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
         if (NetworkObjectId % 2 == 0)
         {
@@ -67,6 +68,7 @@ public class PlayerController : NetworkBehaviour
         vehicle = GameObject.FindGameObjectWithTag("Vehicle").GetComponent<VehicleController>();
         NetworkObject.TrySetParent(vehicle.gameObject, false);
         GetComponent<NetworkObject>().AutoObjectParentSync = true;
+        
 
         wheel = GameObject.Find("Wheel");
         weapons = GameObject.FindGameObjectsWithTag("Weapon");
@@ -83,12 +85,12 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
+        if (IsHost)
+            return;
         if (!IsOwner)
             return;
 
         transform.rotation = Quaternion.identity;
-        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
 
         // Gives a value between -1 and 1
         horizontal.Value = Input.GetAxisRaw("Horizontal"); // -1 is left

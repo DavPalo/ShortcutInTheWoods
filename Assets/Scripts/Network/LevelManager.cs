@@ -10,6 +10,8 @@ public class LevelManager : NetworkBehaviour
     public NetworkVariable<int> damage;
     public NetworkVariable<bool> key;
     public NetworkVariable<FixedString128Bytes> interaction = new NetworkVariable<FixedString128Bytes>("");
+    public int numberPlayer = 0;
+    private GameObject[] players;
 
     public GameObject HealthBar;
 
